@@ -1,3 +1,3 @@
-export default function CFA(file) {
-  console.log('CFA ', file)
+export default function CFAArtifacts(file) {
+  console.log('CFA: ', file)
 }
