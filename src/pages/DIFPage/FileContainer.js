@@ -8,9 +8,8 @@ import { ReactComponent as DownloadIcon } from '../../assets/images/download.svg
 import { ReactComponent as InfoIcon } from '../../assets/images/info.svg';
 import colors from '../../constants/colors'
 import ButtonText from '../../components/ButtonText'
-import ImageContainer from './ImageContainer'
 import FileUploader from '../../components/FileUploader';
-
+import HorizontalImage from '../../assets/images/horizontal-img.png'
 
 const OutputContainer = styled.div`
   background: ${colors.neutralblue};
@@ -33,11 +32,93 @@ const ButtonGroup = styled.div`
   align-items: center;
 `
 
-export default function FileContainer() {
+const FrameHolder = styled.div`
+  display: flex;
+  width: 100%;
+  padding: 0px 5px 0 5px;
+  flex-grow: 1;
+
+  justify-content: space-evenly;
+  align-items: center;
+
+  height: 100%;
+  overflow: hidden;
+`
+
+const Frame = styled.div`
+  width: fit-content;
+  height: fit-content;
+  max-width: 45%;
+  pointer-events: none;
+  border: solid 10px ${colors.neutralbeige};
+  border-bottom-color: ${colors.neutralbeige};
+  border-left-color: ${colors.lightbeige};
+  border-right-color:  ${colors.lightbeige};
+  border-top-color: ${colors.neutralbeige};
+
+  border-radius: 2px;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, .25) inset, 0 5px 10px 5px rgba(0, 0, 0, .25);
+`
+
+const Image = styled.img`
+  display: block;
+  max-width: 100%;
+  max-height: 350px;
+  width: auto;
+  height: auto;
+`
+
+export default function FileContainer(props) {
   const [activeBtn, setActiveBtn] = useState(null)
+  const [{alt, src}, setImg] = useState({
+    src: HorizontalImage,
+    alt: 'Upload an Image'
+  });
+  const [{width, height}, setSize] = useState({
+    height: src.height,
+    width: src.width,
+  });
+  const { cv } = props
 
   const onActiveBtn = (idx) => {
     activeBtn === idx ? setActiveBtn(null) : setActiveBtn(idx)
+  }
+
+  const handleImage = (event) => {
+    console.log(width, height)
+    if (event.target.files[0]) {
+      setImg({
+        src: URL.createObjectURL(event.target.files[0]),
+        alt: event.target.files[0].name
+      }); 
+      const fileUploaded = event.target.files[0];
+    
+      let img = document.getElementById("originalImage")
+      let canvas = document.getElementById("imageCanvas")
+      
+      img.src = URL.createObjectURL(fileUploaded)
+      
+      if (img.src) {
+        setSize({
+          height: img.naturalHeight,
+          width: img.naturalWidth
+        })
+        console.log(img)
+        let tmp = cv.Mat
+        let srcMat = cv.imread(img);
+        let desMat = srcMat.clone();
+        cv.cvtColor(desMat, desMat, cv.COLOR_RGBA2GRAY);
+        cv.imshow('imageCanvas', srcMat)
+
+        console.log(srcMat.cols)
+        URL.revokeObjectURL(img.src);
+        
+        
+        
+        srcMat.delete();
+      }
+    }
+    
   }
 
   return (
@@ -47,21 +128,21 @@ export default function FileContainer() {
           <ButtonText className={activeBtn === 0 ? 'active' : ''} onClick={() => onActiveBtn(0)} style={{marginRight: 10}} icon={PointIcon} size={18}>Select point</ButtonText>
           <ButtonText className={activeBtn === 1 ? 'active' : ''} onClick={() => onActiveBtn(1)} icon={AreaIcon} size={18}>Select area</ButtonText>
         </ButtonGroup>
-        <Fragment style={{
-          position: 'absolute',
-          top: 0,
-          left: '50%',
-          transform: 'translate(-50%, -50%)'
-        }}>
-          <FileUploader/>
-        </Fragment>
+        <FileUploader cv={cv} handleImage={handleImage}/>
         <ButtonGroup>
           <ButtonText style={{marginRight: 10}} icon={DownloadIcon} size={18}/>
           <ButtonText icon={InfoIcon} size={16}/>
         </ButtonGroup>
       </ButtonGroup>
 
-      <ImageContainer/>
+      <FrameHolder>
+        <Frame>
+            <Image src={src} alt={alt} id="originalImage"/>
+          </Frame>
+          <Frame>
+            <canvas width="200" height="200" id="imageCanvas"></canvas>
+          </Frame>
+      </FrameHolder>
     </OutputContainer>
   )
 }

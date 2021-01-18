@@ -31,7 +31,7 @@ export default function DIFPage() {
         <SideMenu/>
         <UtilContainer/>
       </TopDIFContainer>
-      <FileContainer/>
+      <FileContainer cv={cv}/>
     </DIFContainer>
   )
 }

@@ -15,6 +15,7 @@ const Button = styled(ButtonText)`
 
 function FileUploader(props) {
   const hiddenFileInput = React.useRef(null);
+  const { cv, handleImage } = props
   
   const handleClick = event => {
     hiddenFileInput.current.click();
@@ -23,14 +24,33 @@ function FileUploader(props) {
   const handleChange = event => {
     const fileUploaded = event.target.files[0];
     
+    let img = document.getElementById("originalImage")
+    let canvas = document.getElementById("imageCanvas")
+
+    img.src = URL.createObjectURL(fileUploaded)
+    console.log(fileUploaded)
+    getCurrentImage();
   };
+
+  const getCurrentImage = () => {
+    let img = document.getElementById("originalImage")
+    let canvas = document.getElementById("imageCanvas")
+    if (img.src) {
+      URL.revokeObjectURL(img.src);
+      let srcMat = cv.imread(img);
+      let desMat = srcMat.clone();
+      cv.cvtColor(desMat, desMat, cv.COLOR_RGBA2GRAY);
+      cv.imshow(canvas, desMat)
+      srcMat.delete();
+    }
+  }
 
   return (
     <>
       <Button icon={UploadIcon} onClick={handleClick} size={18}>Upload Image</Button>
       <input type="file"
              ref={hiddenFileInput}
-             onChange={handleChange}
+             onChange={handleImage}
              style={{display:'none'}} 
       /> 
     </>

@@ -46,12 +46,12 @@ export default function ImageContainer() {
     <FrameHolder>
       <Frame>
             {/* <canvas id="imageCanvas"></canvas> */}
-            <Image src={HorizontalImage}/>
+            <Image src={HorizontalImage} id="originalImage"/>
         </Frame>
         <Frame>
-            <Image src={HorizontalImage}/>
+            {/* <Image src={HorizontalImage}/> */}
             {/* <Image src={VerticalImage}/> */}
-            {/* <canvas id="imageCanvas"></canvas> */}
+            <canvas id="imageCanvas"></canvas>
         </Frame>
     </FrameHolder>
   )
