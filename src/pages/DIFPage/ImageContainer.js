@@ -8,7 +8,7 @@ import colors from '../../constants/colors'
 const FrameHolder = styled.div`
   display: flex;
   width: 100%;
-  padding: 0px 5px 0 5px;
+  padding: 10px 10px 0 10px;
   flex-grow: 1;
 
   justify-content: space-evenly;

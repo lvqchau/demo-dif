@@ -13,11 +13,11 @@ const MenuButton = styled.button`
   margin-bottom: 15px;
   transition: all 0.4s;
   & svg {
-    fill: ${colors.graypurple};
+    fill: ${colors.purple};
     transition: all 0.4s;
   }
   &.active svg, &:hover svg {
-    fill: ${colors.purple};
+    fill: ${colors.orange};
   }
 `
 
@@ -25,7 +25,7 @@ const MenuContainer = styled.div`
   display: flex;
   flex-direction: column;
   & a.menu--active ${MenuButton} svg {
-    fill: ${colors.purple};
+    fill: ${colors.orange};
   }
 `
 
