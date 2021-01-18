@@ -36,8 +36,8 @@ const FrameHolder = styled.div`
   display: flex;
   width: 100%;
   padding: 10px 10px 5px 10px;
+  
   flex-grow: 1;
-
   justify-content: space-evenly;
   align-items: center;
 
