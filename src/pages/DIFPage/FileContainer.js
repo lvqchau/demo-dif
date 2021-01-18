@@ -9,7 +9,7 @@ import { ReactComponent as InfoIcon } from '../../assets/images/info.svg';
 import colors from '../../constants/colors'
 import ButtonText from '../../components/ButtonText'
 import FileUploader from '../../components/FileUploader';
-import HorizontalImage from '../../assets/images/horizontal-img.png'
+import DemoImage from '../../assets/images/demo.jpg'
 
 const OutputContainer = styled.div`
   background: ${colors.neutralblue};
@@ -58,6 +58,10 @@ const Frame = styled.div`
 
   border-radius: 2px;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, .25) inset, 0 5px 10px 5px rgba(0, 0, 0, .25);
+
+  & canvas {
+    display: flex;
+  }
 `
 
 const Image = styled.img`
@@ -74,7 +78,7 @@ export default function FileContainer(props) {
 
   const { cv } = props
   const [{alt, src}, setImg] = useState({
-    src: HorizontalImage,
+    src: DemoImage,
     alt: 'Upload an Image'
   });
   const [{width, height}, setSize] = useState({
@@ -82,7 +86,10 @@ export default function FileContainer(props) {
     width: 200,
   });
   
-  useEffect(()=>{console.log('test')},[width, height, src, img])
+  useEffect(()=>{
+    // getCurrentImage()
+    
+  },[])
 
   const onActiveBtn = (idx) => {
     activeBtn === idx ? setActiveBtn(null) : setActiveBtn(idx)
@@ -90,40 +97,35 @@ export default function FileContainer(props) {
 
   const handleImage = (event) => {
     if (event.target.files[0]) {
-      setImg({
-        src: URL.createObjectURL(event.target.files[0]),
-        alt: event.target.files[0].name
-      }); 
+      // setImg({
+      //   src: URL.createObjectURL(event.target.files[0]),
+      //   alt: event.target.files[0].name
+      // }); 
 
-      const fileUploaded = event.target.files[0];
+      // const fileUploaded = event.target.files[0];
     
       let img = document.getElementById("originalImage")
       let canvas = document.getElementById("imageCanvas")
-      
-      img.src = URL.createObjectURL(fileUploaded)
       setSize({
-        height: img.height,
-        width: img.width
+        width: img.width,
+        height: img.height
       })
-      if (img.src) {
-
-        let srcMat = cv.imread(img);
-        console.log(img.src, srcMat.data)
-        let desMat = srcMat.clone();
-        cv.cvtColor(desMat, desMat, cv.COLOR_RGBA2GRAY);
-        cv.imshow(canvas, srcMat)
-
-
-
-        console.log(srcMat.cols)
-        URL.revokeObjectURL(img.src);
-        
-        
-        
-        srcMat.delete();
-      }
+      // img.src = URL.createObjectURL(fileUploaded)
     }
-    
+  }
+
+  const getCurrentImage = () => {
+    let img = document.getElementById("originalImage")
+    let canvas = document.getElementById("imageCanvas")
+    if (img.src) {
+      let srcMat = cv.imread('originalImage');
+      let desMat = srcMat.clone();
+      cv.cvtColor(desMat, desMat, cv.COLOR_RGBA2GRAY);
+      cv.imshow('imageCanvas', desMat)
+      
+      URL.revokeObjectURL(img.src);
+      srcMat.delete();
+    }
   }
 
   return (
@@ -142,7 +144,7 @@ export default function FileContainer(props) {
 
       <FrameHolder>
         <Frame>
-            <Image src={src} alt={alt} id="originalImage"/>
+            <Image src={DemoImage} onLoad={getCurrentImage} alt={alt} id="originalImage"/>
           </Frame>
           <Frame>
             <canvas width={width} height={height}id="imageCanvas"></canvas>
