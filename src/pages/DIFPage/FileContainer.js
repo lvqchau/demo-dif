@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 import { ReactComponent as PointIcon } from '../../assets/images/aim.svg';
-import { ReactComponent as AreaIcon } from '../../assets/images/crop (1).svg';
+import { ReactComponent as AreaIcon } from '../../assets/images/crop.svg';
 
 import { ReactComponent as DownloadIcon } from '../../assets/images/download.svg';
 import { ReactComponent as InfoIcon } from '../../assets/images/info.svg';
