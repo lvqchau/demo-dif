@@ -19,18 +19,27 @@ const Loader = styled.div`
 
 function App() {
   const [cvState, setCvState] = useState(false)
+  const [npState, setNpState] = useState(false)
   function onOpenCvReady() {
     setCvState(true);
   }
+  
+  function onNumpyReady() {
+    setNpState(true);
+  }
 
-  useEffect(()=>{
-    const promise = injectScript('opencv-injected-js', "/assets/lib/opencv.js");
-    promise
+  useEffect(async () => {
+    const promiseCV =  injectScript('opencv-injected-js', "/assets/lib/opencv.js");
+    const promiseNP =  injectScript('numpy-injected-js', "/assets/lib/numjs.min.js");
+    promiseCV
       .then((res) => onOpenCvReady())
+      .catch(err => console.log('Error loading dependencies, please refresh'))
+    promiseNP
+      .then((res) => onNumpyReady())
       .catch(err => console.log('Error loading dependencies, please refresh'))
   }, [])
 
-  if (!cvState) 
+  if (!cvState || !npState) 
     return <Loader/>
   
   return (

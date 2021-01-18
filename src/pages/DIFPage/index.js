@@ -23,7 +23,7 @@ const TopDIFContainer = styled.div`
 `
 
 export default function DIFPage() {
-  const { cv } = window;
+  const { cv, nj } = window;
 
   return (
     <DIFContainer>
@@ -31,7 +31,7 @@ export default function DIFPage() {
         <SideMenu/>
         <UtilContainer/>
       </TopDIFContainer>
-      <FileContainer cv={cv}/>
+      <FileContainer cv={cv} nj={nj}/>
     </DIFContainer>
   )
 }

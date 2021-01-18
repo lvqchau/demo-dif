@@ -74,9 +74,7 @@ const Image = styled.img`
 
 export default function FileContainer(props) {
   const [activeBtn, setActiveBtn] = useState(null)
-  let img = document.getElementById("originalImage")
-
-  const { cv } = props
+  const { cv, nj } = props
   const [{alt, src}, setImg] = useState({
     src: DemoImage,
     alt: 'Upload an Image'
