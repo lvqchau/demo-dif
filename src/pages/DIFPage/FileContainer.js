@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 import { ReactComponent as PointIcon } from '../../assets/images/aim.svg';
@@ -70,45 +70,50 @@ const Image = styled.img`
 
 export default function FileContainer(props) {
   const [activeBtn, setActiveBtn] = useState(null)
+  let img = document.getElementById("originalImage")
+
+  const { cv } = props
   const [{alt, src}, setImg] = useState({
     src: HorizontalImage,
     alt: 'Upload an Image'
   });
   const [{width, height}, setSize] = useState({
-    height: src.height,
-    width: src.width,
+    height: 200,
+    width: 200,
   });
-  const { cv } = props
+  
+  useEffect(()=>{console.log('test')},[width, height, src, img])
 
   const onActiveBtn = (idx) => {
     activeBtn === idx ? setActiveBtn(null) : setActiveBtn(idx)
   }
 
   const handleImage = (event) => {
-    console.log(width, height)
     if (event.target.files[0]) {
       setImg({
         src: URL.createObjectURL(event.target.files[0]),
         alt: event.target.files[0].name
       }); 
+
       const fileUploaded = event.target.files[0];
     
       let img = document.getElementById("originalImage")
       let canvas = document.getElementById("imageCanvas")
       
       img.src = URL.createObjectURL(fileUploaded)
-      
+      setSize({
+        height: img.height,
+        width: img.width
+      })
       if (img.src) {
-        setSize({
-          height: img.naturalHeight,
-          width: img.naturalWidth
-        })
-        console.log(img)
-        let tmp = cv.Mat
+
         let srcMat = cv.imread(img);
+        console.log(img.src, srcMat.data)
         let desMat = srcMat.clone();
         cv.cvtColor(desMat, desMat, cv.COLOR_RGBA2GRAY);
-        cv.imshow('imageCanvas', srcMat)
+        cv.imshow(canvas, srcMat)
+
+
 
         console.log(srcMat.cols)
         URL.revokeObjectURL(img.src);
@@ -140,7 +145,7 @@ export default function FileContainer(props) {
             <Image src={src} alt={alt} id="originalImage"/>
           </Frame>
           <Frame>
-            <canvas width="200" height="200" id="imageCanvas"></canvas>
+            <canvas width={width} height={height}id="imageCanvas"></canvas>
           </Frame>
       </FrameHolder>
     </OutputContainer>
