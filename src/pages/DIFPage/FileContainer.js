@@ -134,7 +134,6 @@ export default function FileContainer(props) {
           <ButtonText icon={InfoIcon} size={16}/>
         </ButtonGroup>
       </ButtonGroup>
-
       <FrameHolder>
         <Frame>
             <Image src={DemoImage} onLoad={getCurrentImage} alt={alt} id="originalImage"/>
