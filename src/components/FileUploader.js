@@ -28,8 +28,6 @@ function FileUploader(props) {
     let canvas = document.getElementById("imageCanvas")
 
     img.src = URL.createObjectURL(fileUploaded)
-    console.log(fileUploaded)
-    getCurrentImage();
   };
 
   const getCurrentImage = () => {

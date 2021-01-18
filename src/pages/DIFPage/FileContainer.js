@@ -85,33 +85,28 @@ export default function FileContainer(props) {
     height: 200,
     width: 200,
   });
-  
-  useEffect(()=>{
-    // getCurrentImage()
-    
-  },[])
 
   const onActiveBtn = (idx) => {
     activeBtn === idx ? setActiveBtn(null) : setActiveBtn(idx)
   }
 
   const handleImage = (event) => {
-    if (event.target.files[0]) {
-      // setImg({
-      //   src: URL.createObjectURL(event.target.files[0]),
-      //   alt: event.target.files[0].name
-      // }); 
+    // if (event.target.files[0]) {
+    //   // setImg({
+    //   //   src: URL.createObjectURL(event.target.files[0]),
+    //   //   alt: event.target.files[0].name
+    //   // }); 
 
-      // const fileUploaded = event.target.files[0];
+    //   // const fileUploaded = event.target.files[0];
     
-      let img = document.getElementById("originalImage")
-      let canvas = document.getElementById("imageCanvas")
-      setSize({
-        width: img.width,
-        height: img.height
-      })
-      // img.src = URL.createObjectURL(fileUploaded)
-    }
+    //   let img = document.getElementById("originalImage")
+    //   let canvas = document.getElementById("imageCanvas")
+    //   setSize({
+    //     width: img.width,
+    //     height: img.height
+    //   })
+    //   // img.src = URL.createObjectURL(fileUploaded)
+    // }
   }
 
   const getCurrentImage = () => {
