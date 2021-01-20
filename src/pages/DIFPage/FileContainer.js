@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useLayoutEffect, useRef } from 'react'
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 import { ReactComponent as PointIcon } from '../../assets/images/aim.svg';
@@ -36,7 +36,7 @@ const FrameHolder = styled.div`
   display: flex;
   width: 100%;
   padding: 10px 10px 5px 10px;
-  
+
   flex-grow: 1;
   justify-content: space-evenly;
   align-items: center;
@@ -137,7 +137,7 @@ export default function FileContainer(props) {
       canvas.width = imgWidth;
       canvas.height = imgHeight;
       ctx.drawImage(img, 0, 0, imgWidth, imgHeight);
-      
+      cv.imshow('imageCanvas', desMat)
       // URL.revokeObjectURL(img.src);
       srcMat.delete();
     }
