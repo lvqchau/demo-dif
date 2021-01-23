@@ -32,7 +32,7 @@ const MenuContainer = styled.div`
 export default function SideMenu() {
   return (
     <MenuContainer>
-      <NavLink to='/home' activeClassName='menu--active'>
+      <NavLink exact to='/' activeClassName='menu--active'>
         <MenuButton>
           <HomeIcon width="24" height="24"/>
         </MenuButton>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 
 import { ReactComponent as PointIcon } from '../../assets/images/aim.svg';
@@ -74,7 +74,7 @@ const Image = styled.img`
 
 export default function FileContainer(props) {
   const [activeBtn, setActiveBtn] = useState(null)
-  const { cv, nj } = props
+  const { cv } = props
   const canvasTmp = useRef(null);
   const [{alt, src}, setImg] = useState({
     src: DemoImage,
