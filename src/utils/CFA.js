@@ -120,6 +120,7 @@ function mulEqualSizeArray(arrOne, arrTwo, isFloat) {
 }
 
 // input: 
+// output: 
 function diffAxis2By2(arr) {
   let tmp = Array(1).fill(0).map(() => Array.from({length:2}, () => 0))
   return tmp.map((outer, idxOut) => {
