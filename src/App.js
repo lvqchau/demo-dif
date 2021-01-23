@@ -4,8 +4,8 @@ import DIFPage from './pages/DIFPage'
 import styled from 'styled-components'
 import injectScript from './utils/injectScript'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import SideMenu from './components/SideMenu'
-import HomePage from './pages/HomePage'
+// import SideMenu from './components/SideMenu'
+// import HomePage from './pages/HomePage'
 
 const Loader = styled.div`
   position:   fixed;
@@ -28,16 +28,18 @@ function App() {
     setNpState(true);
   }
 
-  useEffect(async () => {
-    const promiseCV =  injectScript('opencv-injected-js', "/assets/lib/opencv.js");
-    const promiseNP =  injectScript('numpy-injected-js', "/assets/lib/numjs.min.js");
-    promiseCV
-      .then((res) => onOpenCvReady())
-      .catch(err => console.log('Error loading dependencies, please refresh'))
-    promiseNP
-      .then((res) => onNumpyReady())
-      .catch(err => console.log('Error loading dependencies, please refresh'))
+  useEffect(() => {
+    async function fetchLib() {
+      await injectScript('opencv-injected-js', "/assets/lib/opencv.js")
+        .then((res) => onOpenCvReady())
+        .catch(err => console.log('Error loading dependencies, please refresh'))
+      await injectScript('numpy-injected-js', "/assets/lib/numjs.min.js")
+        .then((res) => onNumpyReady())
+        .catch(err => console.log('Error loading dependencies, please refresh'))
+    }
+    fetchLib();
   }, [])
+    
 
   if (!cvState || !npState) 
     return <Loader/>
@@ -45,9 +47,13 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact to='/dif' component={DIFPage}>
+        <Route exact path='/'>
           <DIFPage/>
         </Route>
+        <Route path='/dif'>
+          <DIFPage/>
+        </Route>
+
       </Switch>
     </BrowserRouter>
   )
