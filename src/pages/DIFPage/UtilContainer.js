@@ -60,11 +60,11 @@ const CarouselItem = styled.button`
 const functionNames = [
   {
     name: 'Demosaicing Artifacts',
-    onClick: CircleDetection
+    onClick: CFAArtifacts
   },
   {
     name: 'Chromatic Abbreation',
-    onClick: CFAArtifacts
+    onClick: CircleDetection
   },
   {
     name: 'Error Level Analysis',
@@ -100,7 +100,7 @@ export default function UtilContainer() {
             functionNames.map((item, index) => 
               <CarouselItem key={`carousel-functionalities-${index}`} className={index === curBtn ? 'active' : ''} onClick={() => {
                 setBtn(index)
-                item.onClick()
+                item.onClick('../../assets/images/demo.jpg')
               }}>
                 <p>{item.name}</p>
               </CarouselItem>
