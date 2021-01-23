@@ -1,15 +1,15 @@
 import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 
-import { ReactComponent as PointIcon } from '../../assets/images/aim.svg';
-import { ReactComponent as AreaIcon } from '../../assets/images/crop.svg';
+import { ReactComponent as PointIcon } from '../assets/images/aim.svg';
+import { ReactComponent as AreaIcon } from '../assets/images/crop.svg';
 
-import { ReactComponent as DownloadIcon } from '../../assets/images/download.svg';
-import { ReactComponent as InfoIcon } from '../../assets/images/info.svg';
-import colors from '../../constants/colors'
-import ButtonText from '../../components/ButtonText'
-import FileUploader from '../../components/FileUploader';
-import DemoImage from '../../assets/images/demo.jpg'
+import { ReactComponent as DownloadIcon } from '../assets/images/download.svg';
+import { ReactComponent as InfoIcon } from '../assets/images/info.svg';
+import colors from '../constants/colors'
+import ButtonText from '../components/ButtonText'
+import FileUploader from '../components/FileUploader';
+import DemoImage from '../assets/images/demo.jpg'
 
 const OutputContainer = styled.div`
   background: ${colors.neutralblue};
