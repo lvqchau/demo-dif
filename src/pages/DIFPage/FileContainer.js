@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 
 import { ReactComponent as PointIcon } from '../../assets/images/aim.svg';
@@ -9,7 +9,7 @@ import { ReactComponent as InfoIcon } from '../../assets/images/info.svg';
 import colors from '../../constants/colors'
 import ButtonText from '../../components/ButtonText'
 import FileUploader from '../../components/FileUploader';
-import DemoImage from '../../assets/images/demo.jpg'
+import DemoImage from '../../assets/images/cat-drink.jpg'
 
 const OutputContainer = styled.div`
   background: ${colors.neutralblue};
@@ -67,14 +67,14 @@ const Frame = styled.div`
 const Image = styled.img`
   display: block;
   max-width: 100%;
-  max-height: 100%;
+  max-height: 350px;
   width: auto;
   height: auto;
 `
 
 export default function FileContainer(props) {
   const [activeBtn, setActiveBtn] = useState(null)
-  const { cv, nj } = props
+  const { cv } = props
   const canvasTmp = useRef(null);
   const [{alt, src}, setImg] = useState({
     src: DemoImage,
@@ -90,55 +90,24 @@ export default function FileContainer(props) {
   }
 
   const handleImage = (event) => {
-    // if (event.target.files[0]) {
-    //   // setImg({
-    //   //   src: URL.createObjectURL(event.target.files[0]),
-    //   //   alt: event.target.files[0].name
-    //   // }); 
-
-    //   // const fileUploaded = event.target.files[0];
-    
-    //   let img = document.getElementById("originalImage")
-    //   let canvas = document.getElementById("imageCanvas")
-    //   setSize({
-    //     width: img.width,
-    //     height: img.height
-    //   })
-    //   // img.src = URL.createObjectURL(fileUploaded)
-    // }
+    if (event.target.files[0]) {
+      var fr = new FileReader();
+      fr.onload = function () {
+          document.getElementById("originalImage").src = fr.result;
+      }
+      fr.readAsDataURL(event.target.files[0]);
+    }
   }
 
   const getCurrentImage = () => {
     let img = document.getElementById("originalImage")
     let canvas = document.getElementById("imageCanvas")
-    // const context = canvasTmp.current.getContext('2d');
-
-    // let srcMat = cv.imread(img);
-    // let desMat = srcMat.clone();
-    // cv.cvtColor(desMat, desMat, cv.COLOR_RGBA2GRAY);
-    // // cv.imshow(context, desMat)
 
     if (img.src) {
-      setSize({
-        width: img.naturalWidth,
-        height: img.naturalHeight
-      })
-      canvas.width = width
-      canvas.height = height
       let srcMat = cv.imread('originalImage');
       let desMat = srcMat.clone();
       cv.cvtColor(desMat, desMat, cv.COLOR_RGBA2GRAY);
       cv.imshow('imageCanvas', desMat)
-      
-      
-      let ctx = canvas.getContext("2d");
-      let imgWidth = img.naturalWidth;
-      let imgHeight = img.naturalHeight;
-      canvas.width = imgWidth;
-      canvas.height = imgHeight;
-      ctx.drawImage(img, 0, 0, imgWidth, imgHeight);
-      cv.imshow('imageCanvas', desMat)
-      // URL.revokeObjectURL(img.src);
       srcMat.delete();
     }
   }
@@ -163,7 +132,7 @@ export default function FileContainer(props) {
           <Frame>
             <canvas 
             ref={canvasTmp}
-            style={{maxWidth: '100%', maxHeight: '100%'}}
+            style={{maxWidth: '100%', maxHeight: '350px'}}
             id="imageCanvas"></canvas>
           </Frame>
       </FrameHolder>
