@@ -1,21 +1,13 @@
 import React, {useEffect, useState} from 'react'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+
 import './App.css'
 import DIFPage from './pages/DIFPage'
-import styled from 'styled-components'
 import injectScript from './utils/injectScript'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import Loader from './components/Loader'
 // import SideMenu from './components/SideMenu'
-// import HomePage from './pages/HomePage'
+import HomePage from './pages/HomePage'
 
-const Loader = styled.div`
-  position:   fixed;
-  z-index:    9999;
-  top:        0;
-  left:       0;
-  height:     100%;
-  width:      100%;
-  background: rgba( 255, 255, 255, .8) url('http://i.stack.imgur.com/FhHRx.gif') 50% 50% no-repeat;
-`
 
 function App() {
   const [cvState, setCvState] = useState(false)
@@ -48,7 +40,7 @@ function App() {
     <BrowserRouter>
       <Switch>
         <Route exact path='/'>
-          <DIFPage/>
+          <HomePage/>
         </Route>
         <Route path='/dif'>
           <DIFPage/>

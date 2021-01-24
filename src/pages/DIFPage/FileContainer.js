@@ -9,7 +9,7 @@ import { ReactComponent as InfoIcon } from '../../assets/images/info.svg'
 import colors from '../../constants/colors'
 import ButtonText from '../../components/ButtonText'
 import FileUploader from '../../components/FileUploader'
-import DemoImage from '../../assets/images/cat-drink.jpg'
+import DemoImage from '../../assets/images/test1.jpg'
 
 const OutputContainer = styled.div`
   background: ${colors.neutralblue};

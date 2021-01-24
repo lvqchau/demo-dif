@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import Loader from '../../components/Loader'
 import colors from '../../constants/colors'
 import CFAArtifacts from '../../utils/CFA'
 import CircleDetection from '../../utils/CircleDetection'
@@ -90,6 +91,18 @@ const functionNames = [
 
 export default function UtilContainer() {
   const [curBtn, setBtn] = useState(0)
+  const [loader, setLoader] = useState(false)
+
+  function setStateAsync(state) {
+    return new Promise((resolve) => {
+      setBtn(state, resolve)
+    });
+  }
+
+  async function handleBtnClick(item, index) {
+    // await setStateAsync(index);
+    let result = await item.onClick()
+  }
 
   return (
     <UtilityContainer>
@@ -97,15 +110,15 @@ export default function UtilContainer() {
         <CarouselNav></CarouselNav>
         <CarouselContent>
           {
-            functionNames.map((item, index) => 
-              <CarouselItem key={`carousel-functionalities-${index}`} className={index === curBtn ? 'active' : ''} onClick={() => {
-                setBtn(index)
-                item.onClick('../../assets/images/demo.jpg')
-              }}>
+            functionNames.map((item, index) =>
+              <CarouselItem key={`carousel-functionalities-${index}`} className={index === curBtn ? 'active' : ''} onClick={() => handleBtnClick(item, index)}>
                 <p>{item.name}</p>
               </CarouselItem>
           )}
         </CarouselContent>
+        {
+          loader ? <Loader/> : <></>
+        }
       </UtilCarousel>
     </UtilityContainer>
   )
