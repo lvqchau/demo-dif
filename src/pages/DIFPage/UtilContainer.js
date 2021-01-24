@@ -89,7 +89,7 @@ const functionNames = [
 ]
 
 export default function UtilContainer() {
-  const [curBtn, setBtn] = useState(0);
+  const [curBtn, setBtn] = useState(0)
 
   return (
     <UtilityContainer>
