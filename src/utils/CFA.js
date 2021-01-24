@@ -88,6 +88,7 @@ async function CFATamperDetection() {
     proc_im = njs.assignColumnAtColIndex([...proc_im], bilin_im, 5, 2)
     const proc_im_shape = njs.getDimensions([...proc_im])
     let block_result = njs.zeros(Math.floor(proc_im_shape[0]/w1), Math.floor(proc_im_shape[1]/w1), 6)
+    
 
     /* After eval_block
     for (let h=0; h < proc_im_shape[0]; h+=w1) {
