@@ -40,7 +40,7 @@ function App() {
     <BrowserRouter>
       <Switch>
         <Route exact path='/'>
-          <HomePage/>
+          <DIFPage/>
         </Route>
         <Route path='/dif'>
           <DIFPage/>
