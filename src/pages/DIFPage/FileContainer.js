@@ -1,15 +1,15 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 
-import { ReactComponent as PointIcon } from '../../assets/images/aim.svg';
-import { ReactComponent as AreaIcon } from '../../assets/images/crop.svg';
+import { ReactComponent as PointIcon } from '../../assets/images/aim.svg'
+import { ReactComponent as AreaIcon } from '../../assets/images/crop.svg'
 
-import { ReactComponent as DownloadIcon } from '../../assets/images/download.svg';
-import { ReactComponent as InfoIcon } from '../../assets/images/info.svg';
+import { ReactComponent as DownloadIcon } from '../../assets/images/download.svg'
+import { ReactComponent as InfoIcon } from '../../assets/images/info.svg'
 import colors from '../../constants/colors'
 import ButtonText from '../../components/ButtonText'
-import FileUploader from '../../components/FileUploader';
-import DemoImage from '../../assets/images/cat-drink.jpg'
+import FileUploader from '../../components/FileUploader'
+import DemoImage from '../../assets/images/test1.jpg'
 
 const OutputContainer = styled.div`
   background: ${colors.neutralblue};
@@ -75,15 +75,15 @@ const Image = styled.img`
 export default function FileContainer(props) {
   const [activeBtn, setActiveBtn] = useState(null)
   const { cv } = props
-  const canvasTmp = useRef(null);
+  const canvasTmp = useRef(null)
   const [{alt, src}, setImg] = useState({
     src: DemoImage,
     alt: 'Upload an Image'
-  });
+  })
   const [{width, height}, setSize] = useState({
     height: 200,
     width: 200,
-  });
+  })
 
   const onActiveBtn = (idx) => {
     activeBtn === idx ? setActiveBtn(null) : setActiveBtn(idx)
@@ -91,11 +91,11 @@ export default function FileContainer(props) {
 
   const handleImage = (event) => {
     if (event.target.files[0]) {
-      var fr = new FileReader();
+      var fr = new FileReader()
       fr.onload = function () {
-          document.getElementById("originalImage").src = fr.result;
+          document.getElementById("originalImage").src = fr.result
       }
-      fr.readAsDataURL(event.target.files[0]);
+      fr.readAsDataURL(event.target.files[0])
     }
   }
 
@@ -104,11 +104,11 @@ export default function FileContainer(props) {
     let canvas = document.getElementById("imageCanvas")
 
     if (img.src) {
-      let srcMat = cv.imread('originalImage');
-      let desMat = srcMat.clone();
-      cv.cvtColor(desMat, desMat, cv.COLOR_RGBA2GRAY);
+      let srcMat = cv.imread('originalImage')
+      let desMat = srcMat.clone()
+      cv.cvtColor(desMat, desMat, cv.COLOR_RGBA2GRAY)
       cv.imshow('imageCanvas', desMat)
-      srcMat.delete();
+      srcMat.delete()
     }
   }
 

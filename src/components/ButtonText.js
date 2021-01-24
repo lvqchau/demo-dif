@@ -6,6 +6,7 @@ const Button = styled.button`
   display: flex;
   align-items: center;  
   height: fit-content;
+  width: fit-content;
   
   font-size: 1rem;
   color: ${colors.graypurple};
@@ -31,11 +32,14 @@ const Button = styled.button`
 
 export default function ButtonText(props) {
   const { className, icon, size, children, onClick, style } = props
-  const Icon = icon
+  let Icon
+  if (icon) Icon = icon
 
   return (
     <Button className={className} onClick={onClick} style={{...style}}>
-      <Icon width={size} height={size} />
+      {
+        icon ?  <Icon width={size} height={size} /> : <></>
+      }
       { children ? <span style={{verticalAlign: 'middle'}}>{children}</span> : <></>}
     </Button>
   )

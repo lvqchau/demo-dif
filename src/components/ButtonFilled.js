@@ -7,6 +7,7 @@ const Button = styled.button`
   align-items: center;
   padding: 10px 10px 0 10px;
   height: fit-content;
+  width: fit-content;
 
   font-size: 1rem;
   border-radius: 6px;
@@ -31,12 +32,15 @@ const Button = styled.button`
 
 export default function ButtonFilled(props) {
   const { className, icon, size, children, onClick, style } = props
-  const Icon = icon
+  let Icon
+  if (icon) Icon = icon
 
   return (
     <Button className={className} onClick={onClick} style={{...style}}>
-      <Icon width={size} height={size} />
-      { children ? <>{children}</> : <></>}
+      {
+        icon ?  <Icon width={size} height={size} /> : <></>
+      }
+      { children ? <span style={{verticalAlign: 'middle'}}>{children}</span> : <></>}
     </Button>
   )
 }

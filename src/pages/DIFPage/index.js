@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import colors from '../../constants/colors';
+import colors from '../../constants/colors'
 
-import UtilContainer from './UtilContainer';
-import FileContainer from './FileContainer';
-import SideMenu from '../../components/SideMenu';
+import UtilContainer from './UtilContainer'
+import FileContainer from './FileContainer'
+import SideMenu from '../../components/SideMenu'
 
 const DIFContainer = styled.div`
   background: ${colors.darkblue};
@@ -23,7 +23,7 @@ const TopDIFContainer = styled.div`
 `
 
 export default function DIFPage() {
-  const { cv, nj } = window;
+  const { cv, nj } = window
 
   return (
     <DIFContainer>
