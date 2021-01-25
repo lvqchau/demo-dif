@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import ButtonLined from '../../components/ButtonLined'
+import ButtonText from '../../components/ButtonText'
 import Loader from '../../components/Loader'
 import colors from '../../constants/colors'
 import CFAArtifacts from '../../utils/CFA'
@@ -43,7 +45,8 @@ const CarouselContent = styled.div`
   justify-content: space-between;
 `
 
-const CarouselItem = styled.button`
+const CarouselItem = styled.a`
+  cursor: pointer;
   color: ${colors.graypurple};
   font-size: 1rem;
   margin-right: 20px;
@@ -69,29 +72,30 @@ const functionNames = [
   },
   {
     name: 'Error Level Analysis',
-    onClick: CFAArtifacts
+    onClick: CircleDetection
   },
   {
     name: 'Error Level Analysis',
-    onClick: CFAArtifacts
+    onClick: CircleDetection
   },
   {
     name: 'Noise Inconsistencies',
-    onClick: CFAArtifacts
+    onClick: CircleDetection
   },
   {
     name: 'Noise residues',
-    onClick: CFAArtifacts
+    onClick: CircleDetection
   },
   {
     name: 'Lens Disortion',
-    onClick: CFAArtifacts
+    onClick: CircleDetection
   }
 ]
 
 export default function UtilContainer() {
   const [curBtn, setBtn] = useState(0)
   const [loader, setLoader] = useState(false)
+  const [w1, setW1] = useState(5)
 
   function setStateAsync(state) {
     return new Promise((resolve) => {
@@ -99,9 +103,14 @@ export default function UtilContainer() {
     });
   }
 
+  function handleChange(evt) {
+    const {value} = evt.target
+    setW1(value)
+  }
+
   async function handleBtnClick(item, index) {
     // await setStateAsync(index);
-    let result = await item.onClick()
+    let result = await item.onClick(w1)
   }
 
   return (
@@ -111,11 +120,23 @@ export default function UtilContainer() {
         <CarouselContent>
           {
             functionNames.map((item, index) =>
-              <CarouselItem key={`carousel-functionalities-${index}`} className={index === curBtn ? 'active' : ''} onClick={() => handleBtnClick(item, index)}>
+              <CarouselItem key={`carousel-functionalities-${index}`} className={index === curBtn ? 'active' : ''} 
+                onClick={()=>setBtn(index)}
+              >
                 <p>{item.name}</p>
+                <br/>
+                
+                {curBtn === index ? 
+                <>
+                  {item.name==='Demosaicing Artifacts' ? <input placeholder="w1" name="w1" onChange={handleChange}/> : <></>}
+                  <ButtonLined onClick={() => handleBtnClick(item, index)}>Go</ButtonLined>
+                </>
+                 : <></>
+                }
               </CarouselItem>
           )}
         </CarouselContent>
+
         {
           loader ? <Loader/> : <></>
         }

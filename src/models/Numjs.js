@@ -113,24 +113,33 @@ class Numjs {
   }
 
   assignColumnAtColIndex(arr, mat, pos1, pos2, isBool=false) {
-    return arr.map((outer, i) => {
-      return outer.map((inner, j) => {
-        if (typeof inner === 'number') {
-          if (j === pos1) {
-            if (isBool) return mat[i][pos2] ? 1 : 0
-            return mat[i][pos2]
-          }
-          return inner
-        }
-        return inner.map((val, k) => {
-          if (k === pos1) {
-            if (isBool) return mat[i][j][pos2] ? 1 : 0
-            return mat[i][j][pos2]
-          }
-          return val
+    //1d
+    //2d
+    if (typeof arr[0][0] === 'number') {
+      return arr.map((outer, i) => {
+        return outer.map((inner, j) => {
+            if (j === pos1) {
+              if (isBool) return mat[i][pos2] ? 1 : 0
+              return mat[i][pos2]
+            }
+            return inner
         })
       })
-    })
+    }
+    //3d
+    if (typeof arr[0][0][0] === 'number') {
+      return arr.map((outer, i) => {
+        return outer.map((inner, j) => {
+          return inner.map((val, k) => {
+            if (k === pos1) {
+              if (isBool) return mat[i][j][pos2] ? 1 : 0
+              return mat[i][j][pos2]
+            }
+            return val
+          })
+        })
+      })
+    }
   }
   
   getRepmatAtIndex(arr, pos) {

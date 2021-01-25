@@ -5,14 +5,14 @@ import { reshape, std, mean, flatten, median } from 'mathjs'
 /******************************/
 const njs = new Numjs()
 
-export default async function CFAArtifacts() {
+export default async function CFAArtifacts(w1) {
   console.time('Execution Time');
-  await CFATamperDetection()
+  await CFATamperDetection(w1)
   console.timeEnd('Execution Time');  
   return;
 }
 
-async function CFATamperDetection() {
+async function CFATamperDetection(w1) {
   console.log("Initializing...")
   const { cv } = window  
 
@@ -47,7 +47,7 @@ async function CFATamperDetection() {
   let cfa_list = [...small_cfa_list]
   let cfa_list_shape = [...small_cfa_list_shape]
   
-  let w1 = 1
+  w1 = Number(w1)
   let dimThree = njs.getDimensions([...imgPxArray])
   let f1_map = null
   let cfa_detected = null
@@ -71,9 +71,9 @@ async function CFATamperDetection() {
     let g = njs.checkEqualIn2DArray(cfa, 2)
     let b = njs.checkEqualIn2DArray(cfa, 3)
     
-    let repMatR = njs.repmat2By2(r, njs.getDimensions(r), dimThree[0], dimThree[1])
-    let repMatG = njs.repmat2By2(g, njs.getDimensions(r), dimThree[0], dimThree[1])
-    let repMatB = njs.repmat2By2(b, njs.getDimensions(r), dimThree[0], dimThree[1])
+    let repMatR = njs.repmat2By2(r, njs.getDimensions(r), Math.floor(dimThree[0]/2), Math.floor(dimThree[1]/2))
+    let repMatG = njs.repmat2By2(g, njs.getDimensions(r), Math.floor(dimThree[0]/2), Math.floor(dimThree[1]/2))
+    let repMatB = njs.repmat2By2(b, njs.getDimensions(r), Math.floor(dimThree[0]/2), Math.floor(dimThree[1]/2))
 
     bin_filter = njs.assignRowAtColIndex([...bin_filter], repMatR, 0, true)
     bin_filter = njs.assignRowAtColIndex([...bin_filter], repMatG, 1, true)
@@ -160,7 +160,7 @@ async function CFATamperDetection() {
   })
   
   let F1Mat = cv.matFromArray(njs.getDimensions(F1Map)[0], njs.getDimensions(F1Map)[1], cv.CV_8UC1, flatF1)
-  cv.cvtColor(F1Mat, F1Mat, cv.COLOR_GRAY2RGBA)
+  // cv.cvtColor(F1Mat, F1Mat, cv.COLOR_GRAY2RGBA)
   cv.imshow('imageCanvas', F1Mat)
   return;
 }
