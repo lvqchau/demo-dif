@@ -47,7 +47,7 @@ async function CFATamperDetection() {
   let cfa_list = [...small_cfa_list]
   let cfa_list_shape = [...small_cfa_list_shape]
   
-  let w1 = 5
+  let w1 = 1
   let dimThree = njs.getDimensions([...imgPxArray])
   let f1_map = null
   let cfa_detected = null
@@ -71,9 +71,9 @@ async function CFATamperDetection() {
     let g = njs.checkEqualIn2DArray(cfa, 2)
     let b = njs.checkEqualIn2DArray(cfa, 3)
     
-    let repMatR = njs.repmat2By2(r, njs.getDimensions(r), Math.floor(dimThree[0]/2), Math.floor(dimThree[1]/2))
-    let repMatG = njs.repmat2By2(g, njs.getDimensions(r), Math.floor(dimThree[0]/2), Math.floor(dimThree[1]/2))
-    let repMatB = njs.repmat2By2(b, njs.getDimensions(r), Math.floor(dimThree[0]/2), Math.floor(dimThree[1]/2))
+    let repMatR = njs.repmat2By2(r, njs.getDimensions(r), dimThree[0], dimThree[1])
+    let repMatG = njs.repmat2By2(g, njs.getDimensions(r), dimThree[0], dimThree[1])
+    let repMatB = njs.repmat2By2(b, njs.getDimensions(r), dimThree[0], dimThree[1])
 
     bin_filter = njs.assignRowAtColIndex([...bin_filter], repMatR, 0, true)
     bin_filter = njs.assignRowAtColIndex([...bin_filter], repMatG, 1, true)
