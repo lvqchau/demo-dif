@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import Loader from '../../components/Loader'
-import colors from '../../constants/colors'
-import CFAArtifacts from '../../utils/CFA'
-import CircleDetection from '../../utils/CircleDetection'
+import React, { useState } from "react";
+import styled from "styled-components";
+import Loader from "../../components/Loader";
+import colors from "../../constants/colors";
+import CFAArtifacts from "../../utils/CFA";
+import CircleDetection from "../../utils/CircleDetection";
+import ErrorLevelAnalysis from "../../utils/ErrorLevelAnalysis";
+import ExifHeader from "../../utils/ExifHeader";
 
 const UtilityContainer = styled.div`
   background: ${colors.neutralblue};
@@ -25,15 +27,13 @@ const UtilityContainer = styled.div`
   ::-webkit-scrollbar-thumb {
     background: transparent;
   }
-`
+`;
 
 const UtilCarousel = styled.div`
-  position: relative
-`
+  position: relative;
+`;
 
-const CarouselNav = styled.div`
-
-`
+const CarouselNav = styled.div``;
 
 const CarouselContent = styled.div`
   overflow-y: hidden;
@@ -41,7 +41,7 @@ const CarouselContent = styled.div`
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
-`
+`;
 
 const CarouselItem = styled.button`
   color: ${colors.graypurple};
@@ -50,58 +50,59 @@ const CarouselItem = styled.button`
   & p {
     display: inline;
     white-space: nowrap;
-    transition: all .4s;
+    transition: all 0.4s;
     color: ${colors.graypurple};
   }
-  &.active p, &:hover p {
+  &.active p,
+  &:hover p {
     color: ${colors.orange};
   }
-`
+`;
 
 const functionNames = [
   {
-    name: 'Demosaicing Artifacts',
-    onClick: CFAArtifacts
+    name: "Demosaicing Artifacts",
+    onClick: CFAArtifacts,
   },
   {
-    name: 'Chromatic Abbreation',
-    onClick: CircleDetection
+    name: "MetaData Extraction",
+    onClick: ExifHeader,
   },
   {
-    name: 'Error Level Analysis',
-    onClick: CFAArtifacts
+    name: "Error Level Analysis",
+    onClick: ErrorLevelAnalysis,
   },
   {
-    name: 'Error Level Analysis',
-    onClick: CFAArtifacts
+    name: "Error Level Analysis",
+    onClick: CFAArtifacts,
   },
   {
-    name: 'Noise Inconsistencies',
-    onClick: CFAArtifacts
+    name: "Noise Inconsistencies",
+    onClick: CFAArtifacts,
   },
   {
-    name: 'Noise residues',
-    onClick: CFAArtifacts
+    name: "Noise residues",
+    onClick: CFAArtifacts,
   },
   {
-    name: 'Lens Disortion',
-    onClick: CFAArtifacts
-  }
-]
+    name: "Lens Disortion",
+    onClick: CFAArtifacts,
+  },
+];
 
 export default function UtilContainer() {
-  const [curBtn, setBtn] = useState(0)
-  const [loader, setLoader] = useState(false)
+  const [curBtn, setBtn] = useState(0);
+  const [loader, setLoader] = useState(false);
 
   function setStateAsync(state) {
     return new Promise((resolve) => {
-      setBtn(state, resolve)
+      setBtn(state, resolve);
     });
   }
 
   async function handleBtnClick(item, index) {
     // await setStateAsync(index);
-    let result = await item.onClick()
+    let result = await item.onClick();
   }
 
   return (
@@ -109,17 +110,18 @@ export default function UtilContainer() {
       <UtilCarousel>
         <CarouselNav></CarouselNav>
         <CarouselContent>
-          {
-            functionNames.map((item, index) =>
-              <CarouselItem key={`carousel-functionalities-${index}`} className={index === curBtn ? 'active' : ''} onClick={() => handleBtnClick(item, index)}>
-                <p>{item.name}</p>
-              </CarouselItem>
-          )}
+          {functionNames.map((item, index) => (
+            <CarouselItem
+              key={`carousel-functionalities-${index}`}
+              className={index === curBtn ? "active" : ""}
+              onClick={() => handleBtnClick(item, index)}
+            >
+              <p>{item.name}</p>
+            </CarouselItem>
+          ))}
         </CarouselContent>
-        {
-          loader ? <Loader/> : <></>
-        }
+        {loader ? <Loader /> : <></>}
       </UtilCarousel>
     </UtilityContainer>
-  )
+  );
 }
