@@ -6,6 +6,8 @@ import Loader from '../../components/Loader'
 import colors from '../../constants/colors'
 import CFAArtifacts from '../../utils/CFA'
 import CircleDetection from '../../utils/CircleDetection'
+import ExifHeader from "../../utils/ExifHeader";
+import ErrorLevelAnalysis from "../../utils/ErrorLevelAnalysis";
 
 const UtilityContainer = styled.div`
   background: ${colors.neutralblue};
@@ -27,15 +29,13 @@ const UtilityContainer = styled.div`
   ::-webkit-scrollbar-thumb {
     background: transparent;
   }
-`
+`;
 
 const UtilCarousel = styled.div`
-  position: relative
-`
+  position: relative;
+`;
 
-const CarouselNav = styled.div`
-
-`
+const CarouselNav = styled.div``;
 
 const CarouselContent = styled.div`
   overflow-y: hidden;
@@ -43,7 +43,7 @@ const CarouselContent = styled.div`
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
-`
+`;
 
 const CarouselItem = styled.a`
   cursor: pointer;
@@ -53,26 +53,27 @@ const CarouselItem = styled.a`
   & p {
     display: inline;
     white-space: nowrap;
-    transition: all .4s;
+    transition: all 0.4s;
     color: ${colors.graypurple};
   }
-  &.active p, &:hover p {
+  &.active p,
+  &:hover p {
     color: ${colors.orange};
   }
-`
+`;
 
 const functionNames = [
   {
-    name: 'Demosaicing Artifacts',
-    onClick: CFAArtifacts
+    name: "Demosaicing Artifacts",
+    onClick: CFAArtifacts,
   },
   {
-    name: 'Chromatic Abbreation',
-    onClick: CircleDetection
+    name: "MetaData Extraction",
+    onClick: ExifHeader,
   },
   {
-    name: 'Error Level Analysis',
-    onClick: CircleDetection
+    name: "Error Level Analysis",
+    onClick: ErrorLevelAnalysis,
   },
   {
     name: 'Error Level Analysis',
@@ -99,7 +100,7 @@ export default function UtilContainer() {
 
   function setStateAsync(state) {
     return new Promise((resolve) => {
-      setBtn(state, resolve)
+      setBtn(state, resolve);
     });
   }
 
@@ -136,11 +137,8 @@ export default function UtilContainer() {
               </CarouselItem>
           )}
         </CarouselContent>
-
-        {
-          loader ? <Loader/> : <></>
-        }
+        {loader ? <Loader /> : <></>}
       </UtilCarousel>
     </UtilityContainer>
-  )
+  );
 }
