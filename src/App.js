@@ -6,7 +6,7 @@ import DIFPage from './pages/DIFPage'
 import injectScript from './utils/injectScript'
 import Loader from './components/Loader'
 // import SideMenu from './components/SideMenu'
-import HomePage from './pages/HomePage'
+// import HomePage from './pages/HomePage'
 
 
 function App() {

@@ -33,7 +33,7 @@ const ButtonGroup = styled.div`
 `
 
 const FrameHolder = styled.div`
-  display: flex;
+  // display: flex;
   width: 100%;
   padding: 10px 10px 5px 10px;
 
@@ -42,13 +42,13 @@ const FrameHolder = styled.div`
   align-items: center;
 
   height: 100%;
-  overflow: hidden;
+  overflow: scroll;
 `
 
 const Frame = styled.div`
   width: fit-content;
   height: fit-content;
-  max-width: 45%;
+  // max-width: 45%;
   pointer-events: none;
   border: solid 10px ${colors.neutralbeige};
   border-bottom-color: ${colors.neutralbeige};
@@ -66,8 +66,8 @@ const Frame = styled.div`
 
 const Image = styled.img`
   display: block;
-  max-width: 100%;
-  max-height: 350px;
+  // max-width: 100%;
+  // max-height: 350px;
   width: auto;
   height: auto;
 `
@@ -102,7 +102,7 @@ export default function FileContainer(props) {
   const getCurrentImage = () => {
     let img = document.getElementById("originalImage")
     let canvas = document.getElementById("imageCanvas")
-
+    
     if (img.src) {
       let srcMat = cv.imread('originalImage')
       let desMat = srcMat.clone()
@@ -127,14 +127,16 @@ export default function FileContainer(props) {
       </ButtonGroup>
       <FrameHolder>
         <Frame>
-            <Image src={DemoImage} onLoad={getCurrentImage} alt={alt} id="originalImage"/>
-          </Frame>
-          <Frame>
-            <canvas 
-            ref={canvasTmp}
-            style={{maxWidth: '100%', maxHeight: '350px'}}
-            id="imageCanvas"></canvas>
-          </Frame>
+          <Image src={DemoImage} onLoad={getCurrentImage} alt={alt} id="originalImage"/>
+        </Frame>
+        <Frame>
+          <canvas 
+          ref={canvasTmp}
+          // width={width}
+          // height={height}
+          style={{width: '100%', height: '100%'}}
+          id="imageCanvas"></canvas>
+        </Frame>
       </FrameHolder>
     </OutputContainer>
   )

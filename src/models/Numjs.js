@@ -1,5 +1,4 @@
 class Numjs {
-  constructor() {}
   getDimensions(arr) {
     //[row, col]
     return [
@@ -35,6 +34,15 @@ class Numjs {
     }
   }
 
+  arithmeticOp(numOne, numTwo, type="add") {
+    switch (type) {
+      case "sub": return numOne-numTwo
+      case "mul": return numOne*numTwo
+      case "div": return numOne/numTwo ? numOne/numTwo : 0
+      default: return numOne+numTwo
+    }
+  }
+
   round(arr, type="normal") {
     //normal, up, down, round
     //normal: to the closest number, if .5 round up
@@ -51,32 +59,18 @@ class Numjs {
     })
   }
 
-  divideByArray(arr, divider) {
-    if (typeof arr === "number") return arr/divider;
-    return arr.map((outer) => {
-      if (typeof outer === "number") return outer/divider
-      return outer.map((inner) => {
-        if (typeof inner === "number") return inner/divider
-        return inner.map((num) => {
-          return num/divider
+  absolute(arr) {
+    return arr.map(outer => {
+      if (typeof outer === 'number') return Math.abs(outer)
+      return outer.map(inner => {
+        if (typeof inner === 'number') return Math.abs(inner)
+        return inner.map(val => {
+          return Math.abs(val)
         })
       })
     })
   }
-  
-  multiplyByArray(arr, mul) {
-    if (typeof arr === "number") return arr*mul;
-    return arr.map((outer) => {
-      if (typeof outer === "number") return outer*mul
-      return outer.map((inner) => {
-        if (typeof inner === "number") return inner*mul
-        return inner.map((num) => {
-          return num*mul
-        })
-      })
-    })
-  }
-  
+
   checkEqualIn2DArray(arr, val) {
     return arr.map(outer => {
       if (typeof outer === "number") return outer === val
@@ -90,10 +84,9 @@ class Numjs {
     })
   }
   
-  repmat2By2(mat, matShape, repeatColumns, repeatRows) {
+  repmat2By2(mat, matShape, repeatRows, repeatColumns) {
     let numberOfColumns = matShape[1] * repeatColumns;
     let numberOfRows = matShape[0] * repeatRows;
-    
     let values = Array(numberOfRows).fill(true).map(() => Array.from({length:numberOfColumns}, () => true)) 
   
     for (let y = 0; y < numberOfRows; y++) {
@@ -130,7 +123,6 @@ class Numjs {
           return inner
         }
         return inner.map((val, k) => {
-          // console.log(inner)
           if (k === pos1) {
             if (isBool) return mat[i][j][pos2] ? 1 : 0
             return mat[i][j][pos2]
@@ -142,7 +134,8 @@ class Numjs {
   }
   
   getRepmatAtIndex(arr, pos) {
-    let tmp = Array(arr.length).fill(0).map(() => Array.from({length:arr[0].length}, () => 0))
+    let tmp = this.zeros(arr.length, arr[0].length)
+    // let tmp = Array(arr.length).fill(0).map(() => Array.from({length:arr[0].length}, () => 0))
     arr.forEach((outer, i) => {
       outer.forEach((inner, j) => {
         tmp[i][j] = arr[i][j][pos]
@@ -155,14 +148,40 @@ class Numjs {
     return num + '.' + Array(decPlaces + 1).join('0'); 
   }
   
-  mulEqualSizeArray(arrOne, arrTwo) {
+  arithmeticEqualSizeArray(arrOne, arrTwo, type='add') {
     return arrOne.map((outer, idxOut) => {
+      if (typeof outer === 'number') return this.arithmeticOp(arrOne[idxOut], arrTwo[idxOut], type)
       return outer.map((inner, idxIn) => {
+        if (typeof inner === 'number') return this.arithmeticOp(arrOne[idxOut][idxIn], arrTwo[idxOut][idxIn], type)
         return inner.map((val, idx) => {
-          return this.intToFloat(val*arrTwo[idxOut][idxIn][idx], 1)
+          return this.arithmeticOp(val, arrTwo[idxOut][idxIn][idx], type)
         })
       })
     })
+  }
+
+  power(arr, val) {
+    if (typeof val !== 'number') {
+      return arr.map((outer, idxOut) => {
+        if (typeof outer === 'number') return outer**val[idxOut]
+        return outer.map((inner, idxIn) => {
+          if (typeof inner === 'number') return inner**val[idxOut][idxIn]
+          return inner.map((val, idx) => {
+            return inner**val[idxOut][idxIn][idx]
+          })
+        })
+      })
+    }
+    return arr.map(outer => {
+      if (typeof outer === 'number') return outer**val
+      return outer.map(inner => {
+        if (typeof inner === 'number') return inner**val
+        return inner.map(val => {
+          return inner**val
+        })
+      })
+    })
+    
   }
   
   diffAxis2By2(arr) {
@@ -178,16 +197,199 @@ class Numjs {
     return arr[0].map((_, colIndex) => arr.map(row => row[colIndex]))
   }
   
-  argwhere(arr, val) {
-    arr = [[false, false],[false, true]]
+  argwhere(arr, val, type='eq') {
+    //eq: arr === val
+    //lte: arr <= val
+    //gte: arr >= val
+    //gt: arr > val
+    //lt: arr < val
+    //val: array or number or boolean
     let whereArr = []
-    arr.forEach((outer, idxOut) => {
-      outer.forEach((inner, idxIn) => {
-        if (inner == val)
-          whereArr.push([idxOut, idxIn])
-      })
-    })
+    if (typeof val !== 'object') {
+      switch (type) {
+        case 'lte':
+          arr.forEach((outer, idxOut) => {
+            if (typeof outer === 'number') {
+              if (outer <= val)
+                whereArr.push([idxOut])
+            }
+            outer.forEach((inner, idxIn) => {
+              if (inner <= val)
+                whereArr.push([idxOut, idxIn])
+            })
+          })
+          break;
+        case 'gte':
+          arr.forEach((outer, idxOut) => {
+            if (typeof outer === 'number') {
+              if (outer >= val)
+                whereArr.push([idxOut])
+            }
+            outer.forEach((inner, idxIn) => {
+              if (inner >= val)
+                whereArr.push([idxOut, idxIn])
+            })
+          })
+          break;
+        case 'gt':
+          arr.forEach((outer, idxOut) => {
+            if (typeof outer === 'number') {
+              if (outer > val)
+                whereArr.push([idxOut])
+            }
+            outer.forEach((inner, idxIn) => {
+              if (inner > val)
+                whereArr.push([idxOut, idxIn])
+            })
+          })
+          break;
+        case 'lt':
+          arr.forEach((outer, idxOut) => {
+            if (typeof outer === 'number') {
+              if (outer < val)
+                whereArr.push([idxOut])
+            }
+            outer.forEach((inner, idxIn) => {
+              if (inner < val)
+                whereArr.push([idxOut, idxIn])
+            })
+          })
+          break;
+        default:
+          arr.forEach((outer, idxOut) => {
+            if (typeof outer === 'number') {
+              if (outer === val)
+                whereArr.push([idxOut])
+            }
+            outer.forEach((inner, idxIn) => {
+              if (inner === val)
+                whereArr.push([idxOut, idxIn])
+            })
+          })
+          break;
+      }
+    } else {
+      console.log("val is array")
+    }
+    
     return whereArr
+  }
+
+  compare(arr, val, type='eq') {
+    //eq: arr === val
+    //lte: arr <= val
+    //gte: arr >= val
+    //gt: arr > val
+    //lt: arr < val
+    //val: array or number or boolean
+
+    if (typeof val !== 'object') {
+      switch (type) {
+        case 'lte':
+          return arr.map(outer => {
+            if (typeof outer === 'number') {
+              if (outer <= val)
+                return true
+              return false
+            }
+            return outer.map(inner => {
+              if (typeof inner === 'number') {
+                if (inner <= val)
+                  return true
+                return false
+              }
+              return inner.map(innerVal => {
+                if (innerVal <= val)
+                  return true
+                return false
+              })
+            })
+          })
+        case 'gte':
+          return arr.map(outer => {
+            if (typeof outer === 'number') {
+              if (outer >= val)
+                return true
+              return false
+            }
+            return outer.map(inner => {
+              if (typeof inner === 'number') {
+                if (inner >= val)
+                  return true
+                return false
+              }
+              return inner.map(innerVal => {
+                if (innerVal >= val)
+                  return true
+                return false
+              })
+            })
+          })
+        case 'gt':
+          return arr.map(outer => {
+            if (typeof outer === 'number') {
+              if (outer > val)
+                return true
+              return false
+            }
+            return outer.map(inner => {
+              if (typeof inner === 'number') {
+                if (inner > val)
+                  return true
+                return false
+              }
+              return inner.map(innerVal => {
+                if (innerVal > val)
+                  return true
+                return false
+              })
+            })
+          })
+        case 'lt':
+          return arr.map(outer => {
+            if (typeof outer === 'number') {
+              if (outer < val)
+                return true
+              return false
+            }
+            return outer.map(inner => {
+              if (typeof inner === 'number') {
+                if (inner < val)
+                  return true
+                return false
+              }
+              return inner.map(innerVal => {
+                if (innerVal < val)
+                  return true
+                return false
+              })
+            })
+          })
+        default:
+          return arr.map(outer => {
+            if (typeof outer === 'number') {
+              if (outer === val)
+                return true
+              return false
+            }
+            return outer.map(inner => {
+              if (typeof inner === 'number') {
+                if (inner === val)
+                  return true
+                return false
+              }
+              return inner.map(innerVal => {
+                if (innerVal === val)
+                  return true
+                return false
+              })
+            })
+          })
+      }
+    } else {
+      console.log("val is array")
+      return []
+    }
   }
   
   sumByAxisZero(arr) {
@@ -213,6 +415,40 @@ class Numjs {
       })
     })
   }
+
+  sumByAxisOne(arr) {
+    let sumArr = Array(arr.length).fill(0).map(() => Array.from({length:arr[0][0].length}, () => 0))
+
+    return sumArr.map((outer, idxOut) => {
+      return outer.map((_, idxIn) => {
+        let sum = 0;
+        for (let i=0; i < arr[0].length; i++) {
+          sum += arr[idxOut][i][idxIn]
+        }
+        return sum
+      })
+    })
+  }
+
+  sumByAxisTwo(arr) {
+    let sumArr =  Array(arr.length).fill(0).map(() => Array.from({length:arr[0].length}, () => 0))
+
+    return sumArr.map((outer, idxOut) => {
+      return outer.map((_, idxIn) => {
+        let sum = 0;
+        for (let i=0; i < arr[0][0].length; i++) {
+          sum += arr[idxOut][idxIn][i]
+        }
+        return sum
+      })
+    })
+  }
+
+  sumByAxis(arr, axis = 0) {
+    if (axis === 0) return this.sumByAxisZero(arr)
+    if (axis === 1) return this.sumByAxisOne(arr)
+    if (axis === 2) return this.sumByAxisTwo(arr)
+  }
   
   sumArray(arr) {
     let arrSum = 0;
@@ -236,7 +472,7 @@ class Numjs {
 
   correlate(originalLayer, kernel) {
     const dim = this.getDimensions([...originalLayer])
-    let interpolatedLayer = Array(dim[0]).fill(0).map(() => Array.from({length:dim[1]}, () => 0))
+    let interpolatedLayer = this.zeros(dim[0],dim[1])
 
     for (let x = 0; x < dim[0]; ++x) {
       for (let y = 0; y < dim[1]; ++y) {
@@ -254,6 +490,79 @@ class Numjs {
     }
 
     return interpolatedLayer
+  }
+
+  slice(arr, rangeRow, rangeCol=null, rangeInner=null) {
+    let tmp = []
+    let rowStart, rowEnd, colStart, colEnd, innerStart, innerEnd
+    rowStart = rangeRow[0] ? rangeRow[0] : 0
+    rowEnd = rangeRow[1] ? rangeRow[1] : arr.length
+
+    tmp = arr.slice(rowStart, rowEnd)
+
+    if (rangeCol) {
+      colStart = rangeCol[0] ? rangeCol[0] : 0
+      colEnd = rangeCol[1] ? rangeCol[1] : arr[0].length
+      tmp = tmp.map(outer => {
+        return outer.slice(colStart, colEnd)
+      })
+    }
+
+    if (rangeInner) {
+      innerStart = rangeInner[0] ? rangeInner[0] : 0
+      innerEnd = rangeInner[1] ? rangeInner[1] : arr[0][0].length
+      tmp = tmp.map(outer => {
+        return outer.map(inner => {
+          return inner.slice(innerStart, innerEnd)
+        })
+     })
+    }
+
+    return tmp
+  }
+
+  equalOneDArray(arrOne, arrTwo, check) {
+    let arr = []
+    arrOne.forEach((outer, idxOut) => {
+      if (typeof outer === 'number') {
+        if (arrTwo[idxOut] === check) arr.push(outer)
+      }
+      outer.forEach((inner, idxIn) => {
+        if (typeof inner === 'number') {
+          if (arrTwo[idxOut][idxIn] === check) arr.push(inner)
+        }
+        inner.forEach((val, idx) => {
+          if (arrTwo[idxOut][idxIn][idx] === check) arr.push(val)
+        })
+      })
+    })
+    return arr
+  }
+
+  arithmeticOnArray(arr, num, type="add") {
+    //add, sub, mul, div
+    return arr.map(outer => {
+      if (typeof outer === 'number') return this.arithmeticOp(outer, num, type)
+      return outer.map(inner => {
+        if (typeof inner === 'number') return this.arithmeticOp(inner, num, type)
+        return inner.map(val => {
+          return this.arithmeticOp(val, num, type)
+        })
+      })
+    })
+  }
+
+  arithmeticArrayOnArray(arrOne, arrTwo, type="add") {
+    //add, sub, mul, div
+    return arrOne.map((outer, idxOut) => {
+      if (typeof outer === 'number') return this.arithmeticOp(outer, arrTwo[idxOut], type)
+      return outer.map((inner, idxIn) => {
+        if (typeof inner === 'number') return this.arithmeticOp(inner, arrTwo[idxOut][idxIn], type)
+        return inner.map((val, idx) => {
+          return this.arithmeticOp(val, arrTwo[idxOut][idxIn][idx], type)
+        })
+      })
+    })
   }
 }
 
