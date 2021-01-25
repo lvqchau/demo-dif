@@ -150,7 +150,7 @@ async function CFATamperDetection() {
   let U = njs.sumByAxis(njs.absolute(njs.arithmeticOnArray(diffs, 0.25, 'sub')))
   const U_shape = njs.getDimensions([...U])
   U = reshape(U, [1, U_shape[0]])
-  // let F1 = median(U)
+  let F1 = median(U)
   
   //notyet: let CFADetected = cfa_list[val, :, :] == 2
   let F1Map = f1_maps[val]
