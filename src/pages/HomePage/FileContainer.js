@@ -9,7 +9,7 @@ import { ReactComponent as InfoIcon } from '../../assets/images/info.svg'
 import colors from '../../constants/colors'
 import ButtonText from '../../components/ButtonText'
 import FileUploader from '../../components/FileUploader'
-import DemoImage from '../../assets/images/demo.jpg'
+import DemoImage from '../../assets/images/cat-drink.jpg'
 
 const OutputContainer = styled.div`
   background: ${colors.neutralblue};
@@ -33,7 +33,7 @@ const ButtonGroup = styled.div`
 `
 
 const FrameHolder = styled.div`
-  display: flex;
+  // display: flex;
   width: 100%;
   padding: 10px 10px 5px 10px;
 
@@ -48,7 +48,7 @@ const FrameHolder = styled.div`
 const Frame = styled.div`
   width: fit-content;
   height: fit-content;
-  max-width: 45%;
+  // max-width: 45%;
   pointer-events: none;
   border: solid 10px ${colors.neutralbeige};
   border-bottom-color: ${colors.neutralbeige};
@@ -66,8 +66,8 @@ const Frame = styled.div`
 
 const Image = styled.img`
   display: block;
-  max-width: 100%;
-  max-height: 350px;
+  // max-width: 100%;
+  // max-height: 350px;
   width: auto;
   height: auto;
 `

@@ -1,4 +1,4 @@
-export default function ErrorLevelAnalysis(file) {
+export default function ErrorLevelAnalysis(file, quality=0.75, errorScale=10) {
   const img = document.getElementById("originalImage");
   const canvasResult = document.getElementById("imageCanvas");
   const ctxResult = canvasResult.getContext("2d");
@@ -24,7 +24,7 @@ export default function ErrorLevelAnalysis(file) {
 
   const dataURI = canvas.toDataURL(
     "image/jpeg",
-    0.75 /* Thong so jpeg quality 0 ~ 1*/
+    quality /* Thong so jpeg quality 0 ~ 1*/
   );
   let imgObj = new Image();
   imgObj.src = dataURI;
@@ -45,7 +45,7 @@ export default function ErrorLevelAnalysis(file) {
     for (var i = 0, l = arrSource.length; i < l; i += 4) {
       for (var j = 0; j < 3; j++) {
         var error = Math.abs(arrSource[i + j] - arrDes[i + j]);
-        arrSource[i + j] = error * 10;
+        arrSource[i + j] = error * errorScale;
       }
     }
     try {

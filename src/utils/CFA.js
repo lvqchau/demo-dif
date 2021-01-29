@@ -1,37 +1,29 @@
 import Numjs from '../models/Numjs'
-import { reshape, std, mean, flatten, median } from 'mathjs'
+import Image from '../models/Image'
+import { reshape, std, mean, median } from 'mathjs'
 /******************************/
 /******* Main Functions *******/
 /******************************/
 const njs = new Numjs()
+const image = new Image()
 
-export default async function CFAArtifacts(w1) {
+export default function CFAArtifacts(w1) {
   console.time('Execution Time');
-  await CFATamperDetection(w1)
+  CFATamperDetection(w1)
   console.timeEnd('Execution Time');  
   return;
 }
 
-async function CFATamperDetection(w1) {
+function CFATamperDetection(w1) {
   console.log("Initializing...")
   const { cv } = window  
 
   let src = cv.imread("originalImage");
   console.log(src.rows, src.cols)
-  let imgPxArray = njs.zeros(src.rows, src.cols)
+  let imgPxArray = image.arrayFromMat(src)
   let std_thresh = 5;
-  let depth = 4;
+  let depth = 1;
 
-  /* Init array (w, h, 3) - RGB */ 
-  for (let i = 0; i < src.rows; i++) {
-    for (let j = 0; j < src.cols; j++) {
-      let pixel = src.ucharPtr(i, j);
-      let R = pixel[0];
-      let G = pixel[1];
-      let B = pixel[2];
-      imgPxArray[i][j] = [R, G, B];
-    }
-  }
   let dimOne = njs.getDimensions([...imgPxArray])
   let limitCol = Number(Math.round(Math.floor(dimOne[1]/(2**depth)))*(2**depth))
   let limitRow = Number(Math.round(Math.floor(dimOne[0]/(2**depth)))*(2**depth))
@@ -79,7 +71,7 @@ async function CFATamperDetection(w1) {
     bin_filter = njs.assignRowAtColIndex([...bin_filter], repMatG, 1, true)
     bin_filter = njs.assignRowAtColIndex([...bin_filter], repMatB, 2, true)
 
-    let cfa_im = njs.arithmeticEqualSizeArray([...imgPxArray], bin_filter, 'mul');
+    let cfa_im = njs.arithmeticArrayOnArray([...imgPxArray], bin_filter, 'mul');
     let bilin_im  = bilinInterolation([...cfa_im], bin_filter, [...cfa]);
 
     proc_im = njs.assignColumnAtColIndex([...proc_im], imgPxArray, 0, 0)
@@ -150,18 +142,12 @@ async function CFATamperDetection(w1) {
   let U = njs.sumByAxis(njs.absolute(njs.arithmeticOnArray(diffs, 0.25, 'sub')))
   const U_shape = njs.getDimensions([...U])
   U = reshape(U, [1, U_shape[0]])
-  let F1 = median(U)
-  
-  //notyet: let CFADetected = cfa_list[val, :, :] == 2
+  // let F1 = median(U)
+  // let CFADetected = cfa_list[val, :, :] == 2
   let F1Map = f1_maps[val]
-  let flatF1 = flatten(F1Map)
-  flatF1 = flatF1.map(f => {
-    return f >= 1.0 ? 255 : (f <= 0.0 ? 0 : parseInt(Math.floor(f * 256.0)))
-  })
+  cv.imshow('imageCanvas', image.matFromArray(F1Map, 'CV_8UC1', true))
   
-  let F1Mat = cv.matFromArray(njs.getDimensions(F1Map)[0], njs.getDimensions(F1Map)[1], cv.CV_8UC1, flatF1)
-  // cv.cvtColor(F1Mat, F1Mat, cv.COLOR_GRAY2RGBA)
-  cv.imshow('imageCanvas', F1Mat)
+  src.delete()
   return;
 }
 
@@ -169,7 +155,7 @@ function bilinInterolation(cfa_im, bin_filter, cfa) {
   let mask_min = njs.arithmeticOnArray([[1, 2, 1], [2, 4, 2], [1, 2, 1]], 4.0, 'div');
   let mask_max = njs.arithmeticOnArray([[0, 1, 0], [1, 4, 1], [0, 1, 0]], 4.0, 'div');
   if (njs.argwhere(njs.diffAxis2By2(cfa), 0).size !== 0 | njs.argwhere(njs.diffAxis2By2(njs.transpose(cfa)), 0).size !== 0) {
-    mask_max = njs.arithmeticOnArray(mask_max, 2.0, 'mul')
+    mask_max = njs.arithmeticOnArray(mask_max, 2, 'mul')
   }
   let mask = njs.zeros(mask_min.length, mask_min[0].length, 3)
   
@@ -209,9 +195,9 @@ function eval_block(data) {
   let im = data;
   let Out = Array(6).fill(0)
 
-  Out[0] = mean(njs.power(njs.arithmeticEqualSizeArray(njs.getRepmatAtIndex(data, 0), njs.getRepmatAtIndex(data, 3), 'mul'), 2.0))
-  Out[1] = mean(njs.power(njs.arithmeticEqualSizeArray(njs.getRepmatAtIndex(data, 1), njs.getRepmatAtIndex(data, 4), 'mul'), 2.0))
-  Out[2] = mean(njs.power(njs.arithmeticEqualSizeArray(njs.getRepmatAtIndex(data, 2), njs.getRepmatAtIndex(data, 5), 'mul'), 2.0))
+  Out[0] = mean(njs.power(njs.arithmeticArrayOnArray(njs.getRepmatAtIndex(data, 0), njs.getRepmatAtIndex(data, 3), 'sub'), 2.0))
+  Out[1] = mean(njs.power(njs.arithmeticArrayOnArray(njs.getRepmatAtIndex(data, 1), njs.getRepmatAtIndex(data, 4), 'sub'), 2.0))
+  Out[2] = mean(njs.power(njs.arithmeticArrayOnArray(njs.getRepmatAtIndex(data, 2), njs.getRepmatAtIndex(data, 5), 'sub'), 2.0))
 
   Out[3] = std(reshape(njs.getRepmatAtIndex(im, 0),[1,njs.getDimensions(njs.getRepmatAtIndex(im, 1))[0]*njs.getDimensions(njs.getRepmatAtIndex(im, 1))[1]]))
   Out[4] = std(reshape(njs.getRepmatAtIndex(im, 2),[1,njs.getDimensions(njs.getRepmatAtIndex(im, 2))[0]*njs.getDimensions(njs.getRepmatAtIndex(im, 2))[1]]))

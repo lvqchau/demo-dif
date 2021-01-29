@@ -5,6 +5,7 @@ import './App.css'
 import DIFPage from './pages/DIFPage'
 import injectScript from './utils/injectScript'
 import Loader from './components/Loader'
+import HomePage from './pages/HomePage'
 // import SideMenu from './components/SideMenu'
 // import HomePage from './pages/HomePage'
 
@@ -40,7 +41,7 @@ function App() {
     <BrowserRouter>
       <Switch>
         <Route exact path='/'>
-          <DIFPage/>
+          <HomePage/>
         </Route>
         <Route path='/dif'>
           <DIFPage/>

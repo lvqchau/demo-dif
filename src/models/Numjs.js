@@ -1,4 +1,8 @@
 class Numjs {
+  /**
+   * @param {number[][]} arr array of nD dimestion (n > 1)
+   * @result 2D array of [row, col]
+   */
   getDimensions(arr) {
     //[row, col]
     return [
@@ -7,18 +11,39 @@ class Numjs {
     ]
   }
 
-  zeros(row, col, inner=null) {
+  /**
+   * @param {number} row size of row
+   * @param {number} col size of column
+   * @param {number} inner size of inner block
+   * @result Array of <4 dimension filled with 0s
+   */
+  zeros(row, col=null, inner=null) {
+    if (!col)
+    return Array(row).fill(0)
     if (!inner)
       return Array(row).fill(0).map(() => Array.from({length:col}, () => 0))
     return Array(row).fill(0).map(() => Array.from({length:col}, () => Array(inner).fill(0)))
   }
 
-  ones(row, col, inner=null) {
+   /**
+   * @param {number} row size of row
+   * @param {number} col size of column
+   * @param {number} inner size of inner block
+   * @result Array of <4 dimension filled with 1s
+   */
+  ones(row, col=null, inner=null) {
+    if (!col)
+      return Array(row).fill(1)
     if (!inner)
       return Array(row).fill(1).map(() => Array.from({length:col}, () => 1))
     return Array(row).fill(1).map(() => Array.from({length:col}, () => Array(inner).fill(1)))
   }
 
+   /**
+   * @param {number} val number to be rounded
+   * @param {"normal" | "up" | "down" | "round"} type type of rounding numbers
+   * @return Integer of the floating number
+   */
   roundValue(val, type="normal") {
     switch (type) {
       case 'up': return Math.ceil(val)
@@ -34,15 +59,27 @@ class Numjs {
     }
   }
 
+  /**
+   * @param {number} numOne first number for arithmetic operation
+   * @param {number} numTwo second number for arithmetic opeation
+   * @param {"add" | "sub" | "mul" | "div"} type arithemtic operation
+   * @return Result of arithemtic operation
+   */
   arithmeticOp(numOne, numTwo, type="add") {
     switch (type) {
       case "sub": return numOne-numTwo
       case "mul": return numOne*numTwo
-      case "div": return numOne/numTwo ? numOne/numTwo : 0
+      case "div": return numOne/numTwo
+       ? numOne/numTwo : 0
       default: return numOne+numTwo
     }
   }
 
+  /**
+   * @param {number[]} arr array of floating numbers
+   * @param {"normal" | "up" | "down" | "round"} type type of rounding numbers
+   * @return Array of integers
+   */
   round(arr, type="normal") {
     //normal, up, down, round
     //normal: to the closest number, if .5 round up
@@ -59,6 +96,10 @@ class Numjs {
     })
   }
 
+  /**
+   * @param {number[]} arr array of integers [-,+]
+   * @return Array of natural numbers
+   */
   absolute(arr) {
     return arr.map(outer => {
       if (typeof outer === 'number') return Math.abs(outer)
@@ -71,6 +112,11 @@ class Numjs {
     })
   }
 
+  /**
+   * @param {number[]} arr array of integers
+   * @param {number} val value to be compared with
+   * @return Array of boolean values
+   */
   checkEqualIn2DArray(arr, val) {
     return arr.map(outer => {
       if (typeof outer === "number") return outer === val
@@ -84,6 +130,13 @@ class Numjs {
     })
   }
   
+  /**
+   * @param {number[][]} mat 
+   * @param {number[]} matShape
+   * @param {number} repeatRows
+   * @param {number} repeatColumns
+   * @return A 2D array repeated with the original array
+   */
   repmat2By2(mat, matShape, repeatRows, repeatColumns) {
     let numberOfColumns = matShape[1] * repeatColumns;
     let numberOfRows = matShape[0] * repeatRows;
@@ -97,7 +150,7 @@ class Numjs {
   
     return values;
   }
-  
+ 
   assignRowAtColIndex(arr, mat, pos, isBool=false) {
     return arr.map((outer, i) => {
       return outer.map((inner, j) => {
@@ -572,6 +625,78 @@ class Numjs {
         })
       })
     })
+  }
+
+  arithmeticImgArrayOnArray(arrOne, arrTwo, type="sub") {
+    //add, sub, mul, div
+    return arrOne.map((outer, idxOut) => {
+      if (typeof outer === 'number') {
+        let res = this.arithmeticOp(outer, arrTwo[idxOut], type)
+        if (res > 255) return 255
+        if (res < 0) return 256 + res
+        return res
+      }
+      return outer.map((inner, idxIn) => {
+        if (typeof inner === 'number') {
+          let res = this.arithmeticOp(inner, arrTwo[idxOut][idxIn], type)
+          if (res > 255) return 255
+          if (res < 0) return 256 + res
+          return res
+        }
+        return inner.map((val, idx) => {
+          let res = this.arithmeticOp(val, arrTwo[idxOut][idxIn][idx], type)
+          if (res > 255) return 255
+          if (res < 0) return 256 + res
+          return res
+        })
+      })
+    })
+  }
+
+  arithmeticOnImgArray(arr, num, type="add") {
+    console.log(arr.map(outer => {
+      if (typeof outer === 'number') {
+        let res = this.arithmeticOp(outer, num, type)
+        if (res > 256 || res < 0) return outer
+        return res
+      }
+      return outer.map(inner => {
+        if (typeof inner === 'number') {
+          let res = this.arithmeticOp(inner, num, type)
+          if (res > 256 || res < 0) return inner
+          return res
+        }
+        return inner.map(val => {
+          let res = this.arithmeticOp(val, num, type)
+          if (res > 256 || res < 0) return val
+          return res
+        })
+      })
+    }))
+
+
+    //add, sub, mul, div
+    return arr.map(outer => {
+      if (typeof outer === 'number') {
+        let res = this.arithmeticOp(outer, num, type)
+        if (res > 256 || res < 0) return outer
+        return res
+      }
+      return outer.map(inner => {
+        if (typeof inner === 'number') {
+          let res = this.arithmeticOp(inner, num, type)
+          if (res > 256 || res < 0) return inner
+          return res
+        }
+        return inner.map(val => {
+          let res = this.arithmeticOp(val, num, type)
+          if (res > 256 || res < 0) return val
+          return res
+        })
+      })
+    })
+
+    
   }
 }
 

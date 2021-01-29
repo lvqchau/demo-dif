@@ -6,8 +6,10 @@ import Loader from '../../components/Loader'
 import colors from '../../constants/colors'
 import CFAArtifacts from '../../utils/CFA'
 import CircleDetection from '../../utils/CircleDetection'
-import ExifHeader from "../../utils/ExifHeader";
-import ErrorLevelAnalysis from "../../utils/ErrorLevelAnalysis";
+import ExifHeader from "../../utils/ExifHeader"
+import ErrorLevelAnalysis from "../../utils/ErrorLevelAnalysis"
+import MedianNoiseInconsistencies from '../../utils/MedianNoise'
+import NoiseInconsistencies from '../../utils/NoiseInconsistencies'
 
 const UtilityContainer = styled.div`
   background: ${colors.neutralblue};
@@ -62,6 +64,10 @@ const CarouselItem = styled.a`
   }
 `;
 
+const Input = styled.input`
+  width: 100%;
+`
+
 const functionNames = [
   {
     name: "Demosaicing Artifacts",
@@ -76,16 +82,12 @@ const functionNames = [
     onClick: ErrorLevelAnalysis,
   },
   {
-    name: 'Error Level Analysis',
-    onClick: CircleDetection
-  },
-  {
     name: 'Noise Inconsistencies',
-    onClick: CircleDetection
+    onClick: NoiseInconsistencies
   },
   {
-    name: 'Noise residues',
-    onClick: CircleDetection
+    name: 'Median Noise Inconsistencies',
+    onClick: MedianNoiseInconsistencies
   },
   {
     name: 'Lens Disortion',
@@ -96,7 +98,8 @@ const functionNames = [
 export default function UtilContainer() {
   const [curBtn, setBtn] = useState(0)
   const [loader, setLoader] = useState(false)
-  const [w1, setW1] = useState(5)
+  const [cfa_w1, setW1] = useState(5)
+  const [ela, setELA] = useState({ela_quality: 0.75, ela_scale: 10})
 
   function setStateAsync(state) {
     return new Promise((resolve) => {
@@ -105,13 +108,24 @@ export default function UtilContainer() {
   }
 
   function handleChange(evt) {
-    const {value} = evt.target
-    setW1(value)
+    const {name, value} = evt.target
+    switch (name) {
+      case 'cfa_w1': setW1(value); break;
+      case 'ela_quality':
+      case 'ela_scale': setELA({...ela, [name]: value}); break;
+      default: break;
+    }
   }
 
   async function handleBtnClick(item, index) {
     // await setStateAsync(index);
-    let result = await item.onClick(w1)
+    let result = null;
+    switch (index) {
+      case 0: result = await item.onClick(cfa_w1); break;
+      case 2: result = await item.onClick(parseFloat(ela.ela_quality), parseFloat(ela.ela_scale)); break;
+      default: result = await item.onClick(); break;
+    }
+    
   }
 
   return (
@@ -129,7 +143,12 @@ export default function UtilContainer() {
                 
                 {curBtn === index ? 
                 <>
-                  {item.name==='Demosaicing Artifacts' ? <input placeholder="w1" name="w1" onChange={handleChange}/> : <></>}
+                  {item.name==='Demosaicing Artifacts' ? <Input placeholder="w1" name="cfa_w1" onChange={handleChange}/> : <></>}
+                  {item.name==='Error Level Analysis' ? <>
+                    <Input placeholder="quality" name="ela_quality" onChange={handleChange}/>
+                    <br/>
+                    <Input placeholder="scale" name="ela_scale" onChange={handleChange}/>
+                  </> : <></>}
                   <ButtonLined onClick={() => handleBtnClick(item, index)}>Go</ButtonLined>
                 </>
                  : <></>
