@@ -12,9 +12,9 @@ class Numjs {
   }
 
   /**
-   * @param {number} row size of row
-   * @param {number} col size of column
-   * @param {number} inner size of inner block
+   * @param {number} row - size of row
+   * @param {number} col - size of column
+   * @param {number} inner - size of inner block
    * @result Array of <4 dimension filled with 0s
    */
   zeros(row, col=null, inner=null) {
@@ -113,6 +113,7 @@ class Numjs {
   }
 
   /**
+   * Check if values in an array are equal with a value
    * @param {number[]} arr array of integers
    * @param {number} val value to be compared with
    * @return Array of boolean values
@@ -131,6 +132,7 @@ class Numjs {
   }
   
   /**
+   * Repeat the original array horizontally and vertically
    * @param {number[][]} mat 
    * @param {number[]} matShape
    * @param {number} repeatRows
@@ -151,6 +153,14 @@ class Numjs {
     return values;
   }
  
+  /**
+   * Assign a 2D array's row as a 3D array's column
+   * @param {number[][][]} arr original array
+   * @param {number[][]} mat array to be copied into the original
+   * @param {number} pos index of the column to be copied into
+   * @param {boolean} isBool check for conversion from (false, true) to (0,1)
+   * @return The original array with 3rd dimension from another array
+   */
   assignRowAtColIndex(arr, mat, pos, isBool=false) {
     return arr.map((outer, i) => {
       return outer.map((inner, j) => {
@@ -165,6 +175,15 @@ class Numjs {
     })
   }
 
+  /**
+   * Assign a 2D|3D array's column as a 2D|3D array's row
+   * @param {number[][][]} arr original array
+   * @param {number[][]} mat array to be copied into the original
+   * @param {number} pos1 index of the column to be copied into
+   * @param {number} pos2 index of the column to be copied from
+   * @param {boolean} isBool check for conversion from (false, true) to (0,1)
+   * @return The original array with a column copied from another array
+   */
   assignColumnAtColIndex(arr, mat, pos1, pos2, isBool=false) {
     //1d
     //2d
@@ -195,7 +214,13 @@ class Numjs {
     }
   }
   
-  getRepmatAtIndex(arr, pos) {
+  /**
+   * Get position of the 3rd dimension block in a 3D array
+   * @param {number[][][]} arr array to be copied into the original
+   * @param {number} pos2 index of the column to be copied from
+   * @return A new array with each row is the column of the inputted array
+   */
+  getColumnAtIndex(arr, pos) {
     let tmp = this.zeros(arr.length, arr[0].length)
     // let tmp = Array(arr.length).fill(0).map(() => Array.from({length:arr[0].length}, () => 0))
     arr.forEach((outer, i) => {
@@ -206,10 +231,23 @@ class Numjs {
     return tmp
   }
   
-  intToFloat(num, decPlaces) { 
+  /**
+   * Conversion from integer to floating number with assigned decimal place
+   * @param {number} num integer to be converted
+   * @param {number} decPlaces number of decimal places to be put into plus 1
+   * @return A string as a floating number
+   */
+  intToFloat(num, decPlaces=0) { 
     return num + '.' + Array(decPlaces + 1).join('0'); 
   }
   
+  /**
+   * Peform arithmetic operation on 2 equal size arrays
+   * @param {number} arrOne first array for arithmetic operation
+   * @param {number} arrTwo second array for arithmetic opeation
+   * @param {"add" | "sub" | "mul" | "div"} type arithemtic operation
+   * @return Result of arithemtic operation
+   */
   arithmeticEqualSizeArray(arrOne, arrTwo, type='add') {
     return arrOne.map((outer, idxOut) => {
       if (typeof outer === 'number') return this.arithmeticOp(arrOne[idxOut], arrTwo[idxOut], type)
@@ -222,6 +260,12 @@ class Numjs {
     })
   }
 
+  /**
+   * Calculates the power of an array to a number
+   * @param {number[][]} arr array of <4 dimension 
+   * @param {number} val value to be powered by the array
+   * @return Original array with each value powered to a number
+   */
   power(arr, val) {
     if (typeof val !== 'number') {
       return arr.map((outer, idxOut) => {
@@ -255,9 +299,9 @@ class Numjs {
     })
   }
   
-  transpose(arr) {
-    return arr[0].map((_, colIndex) => arr.map(row => row[colIndex]))
-  }
+  // transpose(arr) {
+  //   return arr[0].map((_, colIndex) => arr.map(row => row[colIndex]))
+  // }
   
   argwhere(arr, val, type='eq') {
     //eq: arr === val

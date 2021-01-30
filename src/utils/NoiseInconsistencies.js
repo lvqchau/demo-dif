@@ -1,6 +1,6 @@
 import Numjs from '../models/Numjs'
 import Image from '../models/Image'
-import { reshape } from 'mathjs'
+import { reshape, median } from 'mathjs'
 import wt from 'discrete-wavelets'
 /******************************/
 /******* Main Functions *******/
@@ -48,11 +48,10 @@ function Noise(block_size) {
   }
 
   let abs_map = njs.absolute(block)
-  // med_map = np.median(abs_map, axis=2)
+  let med_map = median(abs_map, axis=2)
   let noise_map = njs.arithmeticOnImgArray(med_map, 0.6745, 'div')
   
   cv.imshow('imageCanvas', image.matFromArray(noise_map))
-  // cv.imshow('imageCanvas', image.matFromArray(noise_map, 'CV_8UC1'))
   */
   
   
