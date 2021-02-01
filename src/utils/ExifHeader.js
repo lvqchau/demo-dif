@@ -1,9 +1,16 @@
-import { EXIF } from "exif-js";
+import { EXIF } from "exif-js"
 
-export default function ExifHeader(file) {
-  var img2 = document.getElementById("originalImage");
-  EXIF.getData(img2, function () {
-    var allMetaData = EXIF.getAllTags(this);
-    console.log(JSON.stringify(allMetaData, null, "\t"));
-  });
+export default async function ExifHeader() {
+  let res = await asyncGetMetaData()
+  return {...res}
+}
+
+function asyncGetMetaData() {
+  return new Promise(function (resolve) {
+    let img = document.getElementById("originalImage")
+    EXIF.getData(img, function () {
+      console.log(EXIF.getAllTags(this))
+      resolve(EXIF.getAllTags(this))
+    })
+  })
 }

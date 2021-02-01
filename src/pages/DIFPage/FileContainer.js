@@ -10,6 +10,7 @@ import colors from '../../constants/colors'
 import ButtonText from '../../components/ButtonText'
 import FileUploader from '../../components/FileUploader'
 import DemoImage from '../../assets/images/demo.jpg'
+import MetaDataContainer from './MetaDataContainer'
 
 const OutputContainer = styled.div`
   background: ${colors.neutralblue};
@@ -73,8 +74,8 @@ const Image = styled.img`
 `
 
 export default function FileContainer(props) {
+  const { cv, metaView } = props
   const [activeBtn, setActiveBtn] = useState(null)
-  const { cv } = props
   const canvasTmp = useRef(null)
   const [{alt, src}, setImg] = useState({
     src: DemoImage,
@@ -100,16 +101,12 @@ export default function FileContainer(props) {
   }
 
   const getCurrentImage = () => {
-    let img = document.getElementById("originalImage")
-    let canvas = document.getElementById("imageCanvas")
-    
-    if (img.src) {
-      let srcMat = cv.imread('originalImage')
-      let desMat = srcMat.clone()
-      cv.cvtColor(desMat, desMat, cv.COLOR_RGBA2GRAY)
-      cv.imshow('imageCanvas', desMat)
-      srcMat.delete()
-    }
+    let img = document.getElementById("originalImage");
+    props.getCurrentImage()
+    setSize({
+      width: img.width,
+      height: img.height
+    })
   }
 
   return (
@@ -129,14 +126,17 @@ export default function FileContainer(props) {
         <Frame>
           <Image src={DemoImage} onLoad={getCurrentImage} alt={alt} id="originalImage"/>
         </Frame>
-        <Frame>
-          <canvas 
-          ref={canvasTmp}
-          // width={width}
-          // height={height}
-          style={{width: '100%', height: '100%'}}
-          id="imageCanvas"></canvas>
+        <Frame style={metaView ? {display: 'none'} : {}}>
+            <canvas 
+              ref={canvasTmp}
+              // width={width}
+              // height={height}
+              style={{width: '100%', height: '100%'}}
+              id="imageCanvas"/>
         </Frame>
+        {
+          metaView ? <MetaDataContainer width={width} height={height} metaData={props.metaData}/> : <></>
+        }
       </FrameHolder>
     </OutputContainer>
   )
