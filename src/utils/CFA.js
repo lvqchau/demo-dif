@@ -1,6 +1,6 @@
 import Numjs from '../models/Numjs'
 import Image from '../models/Image'
-import { reshape, std, mean, median } from 'mathjs'
+import { reshape, std, mean, transpose, median } from 'mathjs'
 /******************************/
 /******* Main Functions *******/
 /******************************/
@@ -121,7 +121,7 @@ function CFATamperDetection(w1) {
     rep_mat = njs.assignRowAtColIndex([...rep_mat], temp, 2)
     block_diffs = njs.arithmeticArrayOnArray(block_diffs, rep_mat, 'div')
 
-    let block_diffs_axisOne = njs.getRepmatAtIndex(block_diffs, 1)
+    let block_diffs_axisOne = njs.getColumnAtIndex(block_diffs, 1)
     const block_diffs_axisOne_shape = njs.getDimensions(block_diffs_axisOne)
     const block_diffs_axisOne_size = block_diffs_axisOne_shape[0]*block_diffs_axisOne_shape[1]
     diffs.push(reshape(block_diffs_axisOne, [1, block_diffs_axisOne_size])[0])
@@ -154,7 +154,7 @@ function CFATamperDetection(w1) {
 function bilinInterolation(cfa_im, bin_filter, cfa) {
   let mask_min = njs.arithmeticOnArray([[1, 2, 1], [2, 4, 2], [1, 2, 1]], 4.0, 'div');
   let mask_max = njs.arithmeticOnArray([[0, 1, 0], [1, 4, 1], [0, 1, 0]], 4.0, 'div');
-  if (njs.argwhere(njs.diffAxis2By2(cfa), 0).size !== 0 | njs.argwhere(njs.diffAxis2By2(njs.transpose(cfa)), 0).size !== 0) {
+  if (njs.argwhere(njs.diffAxis2By2(cfa), 0).size !== 0 | njs.argwhere(njs.diffAxis2By2(transpose(cfa)), 0).size !== 0) {
     mask_max = njs.arithmeticOnArray(mask_max, 2, 'mul')
   }
   let mask = njs.zeros(mask_min.length, mask_min[0].length, 3)
@@ -175,8 +175,8 @@ function bilinInterolation(cfa_im, bin_filter, cfa) {
   const bin_filter_dim = njs.getDimensions([...bin_filter])
   for (let i = 0; i < 3; i++) {
     let mixed_im = njs.zeros(cfa_im_shape[0], cfa_im_shape[1])
-    let orig_layer = njs.getRepmatAtIndex([...cfa_im], i) //cfa_im: float => orig_layer: float
-    let interp_layer = njs.correlate(orig_layer, njs.getRepmatAtIndex(mask, i));
+    let orig_layer = njs.getColumnAtIndex([...cfa_im], i) //cfa_im: float => orig_layer: float
+    let interp_layer = njs.correlate(orig_layer, njs.getColumnAtIndex(mask, i));
 
     for (let k = 0; k < bin_filter_dim[0]; k++) {
       for (let h = 0; h < bin_filter_dim[1]; h++) {
@@ -195,12 +195,12 @@ function eval_block(data) {
   let im = data;
   let Out = Array(6).fill(0)
 
-  Out[0] = mean(njs.power(njs.arithmeticArrayOnArray(njs.getRepmatAtIndex(data, 0), njs.getRepmatAtIndex(data, 3), 'sub'), 2.0))
-  Out[1] = mean(njs.power(njs.arithmeticArrayOnArray(njs.getRepmatAtIndex(data, 1), njs.getRepmatAtIndex(data, 4), 'sub'), 2.0))
-  Out[2] = mean(njs.power(njs.arithmeticArrayOnArray(njs.getRepmatAtIndex(data, 2), njs.getRepmatAtIndex(data, 5), 'sub'), 2.0))
+  Out[0] = mean(njs.power(njs.arithmeticArrayOnArray(njs.getColumnAtIndex(data, 0), njs.getColumnAtIndex(data, 3), 'sub'), 2.0))
+  Out[1] = mean(njs.power(njs.arithmeticArrayOnArray(njs.getColumnAtIndex(data, 1), njs.getColumnAtIndex(data, 4), 'sub'), 2.0))
+  Out[2] = mean(njs.power(njs.arithmeticArrayOnArray(njs.getColumnAtIndex(data, 2), njs.getColumnAtIndex(data, 5), 'sub'), 2.0))
 
-  Out[3] = std(reshape(njs.getRepmatAtIndex(im, 0),[1,njs.getDimensions(njs.getRepmatAtIndex(im, 1))[0]*njs.getDimensions(njs.getRepmatAtIndex(im, 1))[1]]))
-  Out[4] = std(reshape(njs.getRepmatAtIndex(im, 2),[1,njs.getDimensions(njs.getRepmatAtIndex(im, 2))[0]*njs.getDimensions(njs.getRepmatAtIndex(im, 2))[1]]))
-  Out[5] = std(reshape(njs.getRepmatAtIndex(im, 2),[1,njs.getDimensions(njs.getRepmatAtIndex(im, 3))[0]*njs.getDimensions(njs.getRepmatAtIndex(im, 3))[1]]))
+  Out[3] = std(reshape(njs.getColumnAtIndex(im, 0),[1,njs.getDimensions(njs.getColumnAtIndex(im, 1))[0]*njs.getDimensions(njs.getColumnAtIndex(im, 1))[1]]))
+  Out[4] = std(reshape(njs.getColumnAtIndex(im, 2),[1,njs.getDimensions(njs.getColumnAtIndex(im, 2))[0]*njs.getDimensions(njs.getColumnAtIndex(im, 2))[1]]))
+  Out[5] = std(reshape(njs.getColumnAtIndex(im, 2),[1,njs.getDimensions(njs.getColumnAtIndex(im, 3))[0]*njs.getDimensions(njs.getColumnAtIndex(im, 3))[1]]))
   return Out
 }
