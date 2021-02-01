@@ -101,15 +101,8 @@ export default function UtilContainer(props) {
   const [cfa_w1, setW1] = useState(5)
   const [ela, setELA] = useState({ela_quality: 0.75, ela_scale: 10})
 
-  function setStateAsync(state) {
-    return new Promise((resolve) => {
-      setBtn(state, resolve);
-    });
-  }
-
   function setBtnClick(index) {
     props.setMetaView(false);
-    props.getCurrentImage();
     switch (index) {
       case 1: props.setMetaView(true);
       default: setBtn(index); break;

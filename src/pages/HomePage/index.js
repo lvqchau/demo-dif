@@ -25,7 +25,7 @@ const TopDIFContainer = styled.div`
 export default function Homepage() {
   const { cv, nj } = window
   const [metaView, setMetaView] = useState(false)
-  const [metaData, setMetaData] = useState(null)
+  const [metaData, setMetaData] = useState()
 
   function getCurrentImage() {
     let img = document.getElementById("originalImage")

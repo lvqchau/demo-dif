@@ -101,8 +101,18 @@ export default function FileContainer(props) {
   }
 
   const getCurrentImage = () => {
-    let img = document.getElementById("originalImage");
-    props.getCurrentImage()
+    // let img = document.getElementById("originalImage");
+    // props.getCurrentImage()
+    let img = document.getElementById("originalImage")
+    let canvas = document.getElementById("imageCanvas")
+    
+    if (img.src) {
+      let srcMat = cv.imread('originalImage')
+      let desMat = srcMat.clone()
+      cv.cvtColor(desMat, desMat, cv.COLOR_RGBA2GRAY)
+      cv.imshow('imageCanvas', desMat)
+      srcMat.delete()
+    }
     setSize({
       width: img.width,
       height: img.height
