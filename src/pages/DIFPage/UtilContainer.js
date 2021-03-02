@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import ButtonLined from '../../components/ButtonLined'
-import ButtonText from '../../components/ButtonText'
-import Loader from '../../components/Loader'
-import colors from '../../constants/colors'
-import CFAArtifacts from '../../utils/CFA'
-import CircleDetection from '../../utils/CircleDetection'
-import ExifHeader from "../../utils/ExifHeader"
-import ErrorLevelAnalysis from "../../utils/ErrorLevelAnalysis"
-import MedianNoiseInconsistencies from '../../utils/MedianNoise'
-import NoiseInconsistencies from '../../utils/NoiseInconsistencies'
+import React, { useState } from "react";
+import styled from "styled-components";
+import ButtonLined from "../../components/ButtonLined";
+import ButtonText from "../../components/ButtonText";
+import Loader from "../../components/Loader";
+import colors from "../../constants/colors";
+import CFAArtifacts from "../../utils/CFA";
+import CircleDetection from "../../utils/CircleDetection";
+import Histogram from "../../utils/Histogram";
+import ExifHeader from "../../utils/ExifHeader";
+import ErrorLevelAnalysis from "../../utils/ErrorLevelAnalysis";
+import MedianNoiseInconsistencies from "../../utils/MedianNoise";
+import NoiseInconsistencies from "../../utils/NoiseInconsistencies";
 
 const UtilityContainer = styled.div`
   background: ${colors.neutralblue};
@@ -66,7 +67,7 @@ const CarouselItem = styled.a`
 
 const Input = styled.input`
   width: 100%;
-`
+`;
 
 const functionNames = [
   {
@@ -82,40 +83,48 @@ const functionNames = [
     onClick: ErrorLevelAnalysis,
   },
   {
-    name: 'Median Noise Inconsistencies',
-    onClick: MedianNoiseInconsistencies
+    name: "Median Noise Inconsistencies",
+    onClick: MedianNoiseInconsistencies,
   },
   {
-    name: 'Noise Inconsistencies',
-    onClick: NoiseInconsistencies
+    name: "Noise Inconsistencies",
+    onClick: NoiseInconsistencies,
   },
   {
-    name: 'Lens Disortion',
-    onClick: CircleDetection
-  }
-]
+    name: "Histogram",
+    onClick: Histogram,
+  },
+];
 
 export default function UtilContainer(props) {
-  const [curBtn, setBtn] = useState(0)
-  const [loader, setLoader] = useState(false)
-  const [cfa_w1, setW1] = useState(5)
-  const [ela, setELA] = useState({ela_quality: 0.75, ela_scale: 10})
+  const [curBtn, setBtn] = useState(0);
+  const [loader, setLoader] = useState(false);
+  const [cfa_w1, setW1] = useState(5);
+  const [ela, setELA] = useState({ ela_quality: 0.75, ela_scale: 10 });
 
   function setBtnClick(index) {
     props.setMetaView(false);
     switch (index) {
-      case 1: props.setMetaView(true);
-      default: setBtn(index); break;
+      case 1:
+        props.setMetaView(true);
+      default:
+        setBtn(index);
+        break;
     }
   }
 
   function handleChange(evt) {
-    const {name, value} = evt.target
+    const { name, value } = evt.target;
     switch (name) {
-      case 'cfa_w1': setW1(value); break;
-      case 'ela_quality':
-      case 'ela_scale': setELA({...ela, [name]: value}); break;
-      default: break;
+      case "cfa_w1":
+        setW1(value);
+        break;
+      case "ela_quality":
+      case "ela_scale":
+        setELA({ ...ela, [name]: value });
+        break;
+      default:
+        break;
     }
   }
 
@@ -123,13 +132,22 @@ export default function UtilContainer(props) {
     // await setStateAsync(index);
     let result = null;
     switch (index) {
-      case 0: result = await item.onClick(cfa_w1); break;
-      case 2: result = await item.onClick(parseFloat(ela.ela_quality), parseFloat(ela.ela_scale)); break;
-      case 1: 
-        result = await item.onClick(); 
-        props.setMetaData(result); 
+      case 0:
+        result = await item.onClick(cfa_w1);
         break;
-      default: result = await item.onClick(); break;
+      case 2:
+        result = await item.onClick(
+          parseFloat(ela.ela_quality),
+          parseFloat(ela.ela_scale)
+        );
+        break;
+      case 1:
+        result = await item.onClick();
+        props.setMetaData(result);
+        break;
+      default:
+        result = await item.onClick();
+        break;
     }
   }
 
@@ -138,28 +156,52 @@ export default function UtilContainer(props) {
       <UtilCarousel>
         <CarouselNav></CarouselNav>
         <CarouselContent>
-          {
-            functionNames.map((item, index) =>
-              <CarouselItem key={`carousel-functionalities-${index}`} className={index === curBtn ? 'active' : ''} 
-                onClick={()=>setBtnClick(index)}
-              >
-                <p>{item.name}</p>
-                <br/>
-                
-                {curBtn === index ? 
+          {functionNames.map((item, index) => (
+            <CarouselItem
+              key={`carousel-functionalities-${index}`}
+              className={index === curBtn ? "active" : ""}
+              onClick={() => setBtnClick(index)}
+            >
+              <p>{item.name}</p>
+              <br />
+
+              {curBtn === index ? (
                 <>
-                  {item.name==='Demosaicing Artifacts' ? <Input placeholder="w1" name="cfa_w1" onChange={handleChange}/> : <></>}
-                  {item.name==='Error Level Analysis' ? <>
-                    <Input placeholder="quality" name="ela_quality" onChange={handleChange}/>
-                    <br/>
-                    <Input placeholder="scale" name="ela_scale" onChange={handleChange}/>
-                  </> : <></>}
-                  <ButtonLined onClick={() => handleBtnClick(item, index)}>Go</ButtonLined>
+                  {item.name === "Demosaicing Artifacts" ? (
+                    <Input
+                      placeholder="w1"
+                      name="cfa_w1"
+                      onChange={handleChange}
+                    />
+                  ) : (
+                    <></>
+                  )}
+                  {item.name === "Error Level Analysis" ? (
+                    <>
+                      <Input
+                        placeholder="quality"
+                        name="ela_quality"
+                        onChange={handleChange}
+                      />
+                      <br />
+                      <Input
+                        placeholder="scale"
+                        name="ela_scale"
+                        onChange={handleChange}
+                      />
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                  <ButtonLined onClick={() => handleBtnClick(item, index)}>
+                    Go
+                  </ButtonLined>
                 </>
-                 : <></>
-                }
-              </CarouselItem>
-          )}
+              ) : (
+                <></>
+              )}
+            </CarouselItem>
+          ))}
         </CarouselContent>
         {loader ? <Loader /> : <></>}
       </UtilCarousel>
