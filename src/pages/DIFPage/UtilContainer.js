@@ -99,7 +99,7 @@ const functionNames = [
 export default function UtilContainer(props) {
   const [curBtn, setBtn] = useState(0);
   const [loader, setLoader] = useState(false);
-  const [cfa_w1, setW1] = useState(5);
+  const [cfa_w1, setW1] = useState(1);
   const [ela, setELA] = useState({ ela_quality: 0.75, ela_scale: 10 });
 
   function setBtnClick(index) {
@@ -167,32 +167,12 @@ export default function UtilContainer(props) {
 
               {curBtn === index ? (
                 <>
-                  {item.name === "Demosaicing Artifacts" ? (
-                    <Input
-                      placeholder="w1"
-                      name="cfa_w1"
-                      onChange={handleChange}
-                    />
-                  ) : (
-                    <></>
-                  )}
-                  {item.name === "Error Level Analysis" ? (
-                    <>
-                      <Input
-                        placeholder="quality"
-                        name="ela_quality"
-                        onChange={handleChange}
-                      />
-                      <br />
-                      <Input
-                        placeholder="scale"
-                        name="ela_scale"
-                        onChange={handleChange}
-                      />
-                    </>
-                  ) : (
-                    <></>
-                  )}
+                  {/* {item.name==='Demosaicing Artifacts' ? <Input placeholder="w1" name="cfa_w1" onChange={handleChange}/> : <></>}
+                  {item.name==='Error Level Analysis' ? <>
+                    <Input placeholder="quality" name="ela_quality" onChange={handleChange}/>
+                    <br/>
+                    <Input placeholder="scale" name="ela_scale" onChange={handleChange}/>
+                  </> : <></>} */}
                   <ButtonLined onClick={() => handleBtnClick(item, index)}>
                     Go
                   </ButtonLined>
