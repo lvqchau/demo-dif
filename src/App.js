@@ -42,6 +42,7 @@ function App() {
       <Switch>
         <Route exact path='/'>
           <DIFPage/>
+          
         </Route>
         <Route path='/dif'>
           <DIFPage/>
