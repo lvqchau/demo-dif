@@ -97,10 +97,10 @@ const functionNames = [
 ];
 
 export default function UtilContainer(props) {
-  const [curBtn, setBtn] = useState(0);
-  const [loader, setLoader] = useState(false);
-  const [cfa_w1, setW1] = useState(5);
-  const [ela, setELA] = useState({ ela_quality: 0.75, ela_scale: 10 });
+  const [curBtn, setBtn] = useState(0)
+  const [loader, setLoader] = useState(false)
+  const [cfa_w1, setW1] = useState(1)
+  const [ela, setELA] = useState({ela_quality: 0.75, ela_scale: 10})
 
   function setBtnClick(index) {
     props.setMetaView(false);
@@ -167,6 +167,7 @@ export default function UtilContainer(props) {
 
               {curBtn === index ? (
                 <>
+<<<<<<< HEAD
                   {item.name === "Demosaicing Artifacts" ? (
                     <Input
                       placeholder="w1"
@@ -196,6 +197,23 @@ export default function UtilContainer(props) {
                   <ButtonLined onClick={() => handleBtnClick(item, index)}>
                     Go
                   </ButtonLined>
+||||||| 816201d
+                  {item.name==='Demosaicing Artifacts' ? <Input placeholder="w1" name="cfa_w1" onChange={handleChange}/> : <></>}
+                  {item.name==='Error Level Analysis' ? <>
+                    <Input placeholder="quality" name="ela_quality" onChange={handleChange}/>
+                    <br/>
+                    <Input placeholder="scale" name="ela_scale" onChange={handleChange}/>
+                  </> : <></>}
+                  <ButtonLined onClick={() => handleBtnClick(item, index)}>Go</ButtonLined>
+=======
+                  {/* {item.name==='Demosaicing Artifacts' ? <Input placeholder="w1" name="cfa_w1" onChange={handleChange}/> : <></>}
+                  {item.name==='Error Level Analysis' ? <>
+                    <Input placeholder="quality" name="ela_quality" onChange={handleChange}/>
+                    <br/>
+                    <Input placeholder="scale" name="ela_scale" onChange={handleChange}/>
+                  </> : <></>} */}
+                  <ButtonLined onClick={() => handleBtnClick(item, index)}>Go</ButtonLined>
+>>>>>>> c0b86ffb88d80757099e06703fa0692cd2fd2f80
                 </>
               ) : (
                 <></>
