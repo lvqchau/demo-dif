@@ -6,6 +6,7 @@ import Loader from "../../components/Loader";
 import colors from "../../constants/colors";
 import CFAArtifacts from "../../utils/CFA";
 import CircleDetection from "../../utils/CircleDetection";
+import Histogram from "../../utils/Histogram";
 import ExifHeader from "../../utils/ExifHeader";
 import ErrorLevelAnalysis from "../../utils/ErrorLevelAnalysis";
 import MedianNoiseInconsistencies from "../../utils/MedianNoise";
@@ -90,8 +91,8 @@ const functionNames = [
     onClick: NoiseInconsistencies,
   },
   {
-    name: "Lens Disortion",
-    onClick: CircleDetection,
+    name: "Histogram",
+    onClick: Histogram,
   },
 ];
 
