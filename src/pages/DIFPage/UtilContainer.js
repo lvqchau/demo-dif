@@ -148,12 +148,12 @@ export default function UtilContainer(props) {
                 
                 {curBtn === index ? 
                 <>
-                  {item.name==='Demosaicing Artifacts' ? <Input placeholder="w1" name="cfa_w1" onChange={handleChange}/> : <></>}
+                  {/* {item.name==='Demosaicing Artifacts' ? <Input placeholder="w1" name="cfa_w1" onChange={handleChange}/> : <></>}
                   {item.name==='Error Level Analysis' ? <>
                     <Input placeholder="quality" name="ela_quality" onChange={handleChange}/>
                     <br/>
                     <Input placeholder="scale" name="ela_scale" onChange={handleChange}/>
-                  </> : <></>}
+                  </> : <></>} */}
                   <ButtonLined onClick={() => handleBtnClick(item, index)}>Go</ButtonLined>
                 </>
                  : <></>
