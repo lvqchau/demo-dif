@@ -1,22 +1,22 @@
-import React, { useState, useRef } from 'react'
-import styled from 'styled-components'
+import React, { useState, useRef } from "react";
+import styled from "styled-components";
 
-import { ReactComponent as PointIcon } from '../../assets/images/aim.svg'
-import { ReactComponent as AreaIcon } from '../../assets/images/crop.svg'
+import { ReactComponent as PointIcon } from "../../assets/images/aim.svg";
+import { ReactComponent as AreaIcon } from "../../assets/images/crop.svg";
 
-import { ReactComponent as DownloadIcon } from '../../assets/images/download.svg'
-import { ReactComponent as InfoIcon } from '../../assets/images/info.svg'
-import colors from '../../constants/colors'
-import ButtonText from '../../components/ButtonText'
-import FileUploader from '../../components/FileUploader'
-import DemoImage from '../../assets/images/demo.jpg'
-import MetaDataContainer from './MetaDataContainer'
+import { ReactComponent as DownloadIcon } from "../../assets/images/download.svg";
+import { ReactComponent as InfoIcon } from "../../assets/images/info.svg";
+import colors from "../../constants/colors";
+import ButtonText from "../../components/ButtonText";
+import FileUploader from "../../components/FileUploader";
+import DemoImage from "../../assets/images/cat-drink.jpg";
+import MetaDataContainer from "./MetaDataContainer";
 
 const OutputContainer = styled.div`
   background: ${colors.neutralblue};
   border-radius: 6px;
   padding: 20px;
-  
+
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -24,14 +24,14 @@ const OutputContainer = styled.div`
 
   min-height: 400px;
   // max-height: 480px;
-`
+`;
 
 const ButtonGroup = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   align-items: center;
-`
+`;
 
 const FrameHolder = styled.div`
   display: flex;
@@ -44,7 +44,7 @@ const FrameHolder = styled.div`
 
   height: 100%;
   overflow: scroll;
-`
+`;
 
 const Frame = styled.div`
   width: fit-content;
@@ -54,7 +54,7 @@ const Frame = styled.div`
   border: solid 10px ${colors.neutralbeige};
   border-bottom-color: ${colors.neutralbeige};
   border-left-color: ${colors.lightbeige};
-  border-right-color:  ${colors.lightbeige};
+  border-right-color: ${colors.lightbeige};
   border-top-color: ${colors.neutralbeige};
 
   border-radius: 2px;
@@ -63,7 +63,7 @@ const Frame = styled.div`
   & canvas {
     display: flex;
   }
-`
+`;
 
 const Image = styled.img`
   display: block;
@@ -71,73 +71,104 @@ const Image = styled.img`
   max-height: 350px;
   width: auto;
   height: auto;
-`
+`;
 
 export default function FileContainer(props) {
-  const { cv, metaView } = props
-  const [activeBtn, setActiveBtn] = useState(null)
-  const canvasTmp = useRef(null)
-  const [{alt, src}, setImg] = useState({
+  const { cv, metaView } = props;
+  const [activeBtn, setActiveBtn] = useState(null);
+  const canvasTmp = useRef(null);
+  const [{ alt, src }, setImg] = useState({
     src: DemoImage,
-    alt: 'Upload an Image'
-  })
-  const [{width, height}, setSize] = useState({
+    alt: "Upload an Image",
+  });
+  const [{ width, height }, setSize] = useState({
     height: 200,
     width: 200,
-  })
+  });
 
   const onActiveBtn = (idx) => {
-    activeBtn === idx ? setActiveBtn(null) : setActiveBtn(idx)
-  }
+    activeBtn === idx ? setActiveBtn(null) : setActiveBtn(idx);
+  };
 
   const handleImage = (event) => {
     if (event.target.files[0]) {
-      var fr = new FileReader()
+      var fr = new FileReader();
       fr.onload = function () {
-          document.getElementById("originalImage").src = fr.result
-      }
-      fr.readAsDataURL(event.target.files[0])
+        document.getElementById("originalImage").src = fr.result;
+      };
+      fr.readAsDataURL(event.target.files[0]);
     }
-  }
+  };
 
   const getCurrentImage = () => {
     let img = document.getElementById("originalImage");
-    props.getCurrentImage()
+    props.getCurrentImage();
     setSize({
       width: img.width,
-      height: img.height
-    })
-  }
+      height: img.height,
+    });
+  };
 
   return (
     <OutputContainer>
-      <ButtonGroup style={{position: 'relative'}}>
+      <ButtonGroup style={{ position: "relative" }}>
         <ButtonGroup>
-          <ButtonText className={activeBtn === 0 ? 'active' : ''} onClick={() => onActiveBtn(0)} style={{marginRight: 10}} icon={PointIcon} size={18}>Select point</ButtonText>
-          <ButtonText className={activeBtn === 1 ? 'active' : ''} onClick={() => onActiveBtn(1)} icon={AreaIcon} size={18}>Select area</ButtonText>
+          <ButtonText
+            className={activeBtn === 0 ? "active" : ""}
+            onClick={() => onActiveBtn(0)}
+            style={{ marginRight: 10 }}
+            icon={PointIcon}
+            size={18}
+          >
+            Select point
+          </ButtonText>
+          <ButtonText
+            className={activeBtn === 1 ? "active" : ""}
+            onClick={() => onActiveBtn(1)}
+            icon={AreaIcon}
+            size={18}
+          >
+            Select area
+          </ButtonText>
         </ButtonGroup>
-        <FileUploader cv={cv} handleImage={handleImage}/>
+        <FileUploader cv={cv} handleImage={handleImage} />
         <ButtonGroup>
-          <ButtonText style={{marginRight: 10}} icon={DownloadIcon} size={18}/>
-          <ButtonText icon={InfoIcon} size={16}/>
+          <ButtonText
+            style={{ marginRight: 10 }}
+            icon={DownloadIcon}
+            size={18}
+          />
+          <ButtonText icon={InfoIcon} size={16} />
         </ButtonGroup>
       </ButtonGroup>
       <FrameHolder>
         <Frame>
-          <Image src={DemoImage} onLoad={getCurrentImage} alt={alt} id="originalImage"/>
+          <Image
+            src={DemoImage}
+            onLoad={getCurrentImage}
+            alt={alt}
+            id="originalImage"
+          />
         </Frame>
-        <Frame style={metaView ? {display: 'none'} : {}}>
-            <canvas 
-              ref={canvasTmp}
-              // width={width}
-              // height={height}
-              style={{width: '100%', height: '100%'}}
-              id="imageCanvas"/>
+        <Frame style={metaView ? { display: "none" } : {}}>
+          <canvas
+            ref={canvasTmp}
+            // width={width}
+            // height={height}
+            style={{ width: "100%", height: "100%" }}
+            id="imageCanvas"
+          />
         </Frame>
-        {
-          metaView ? <MetaDataContainer width={width} height={height} metaData={props.metaData}/> : <></>
-        }
+        {metaView ? (
+          <MetaDataContainer
+            width={width}
+            height={height}
+            metaData={props.metaData}
+          />
+        ) : (
+          <></>
+        )}
       </FrameHolder>
     </OutputContainer>
-  )
+  );
 }

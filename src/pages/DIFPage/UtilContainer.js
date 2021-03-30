@@ -6,6 +6,7 @@ import Loader from "../../components/Loader";
 import colors from "../../constants/colors";
 import CFAArtifacts from "../../utils/CFA";
 import CircleDetection from "../../utils/CircleDetection";
+import JPEGGhost from "../../utils/JPEG-Ghost";
 import Histogram from "../../utils/Histogram";
 import ExifHeader from "../../utils/ExifHeader";
 import ErrorLevelAnalysis from "../../utils/ErrorLevelAnalysis";
@@ -87,8 +88,8 @@ const functionNames = [
     onClick: MedianNoiseInconsistencies,
   },
   {
-    name: "Noise Inconsistencies",
-    onClick: NoiseInconsistencies,
+    name: "JPEG-Ghost",
+    onClick: JPEGGhost,
   },
   {
     name: "Histogram",
