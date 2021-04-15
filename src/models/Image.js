@@ -3,19 +3,19 @@ import { flatten } from 'mathjs'
 
 const njs = new Numjs()
 
-class Mat {
-  constructor() {
-    const { cv } = window
-    this.src = new cv.Mat()
-  }
-}
+// class Mat {
+//   constructor() {
+//     const { cv } = window
+//     this.src = new cv.Mat()
+//   }
+// }
 
-class MatVector {
-  constructor() {
-    const { cv } = window
-    this.src = new cv.MatVector()
-  }
-}
+// class MatVector {
+//   constructor() {
+//     const { cv } = window
+//     this.src = new cv.MatVector()
+//   }
+// }
 
 class Image {
   constructor(src, type='CV_8UC3', isFloat=false) {

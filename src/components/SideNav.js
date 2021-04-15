@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import colors from '../constants/colors'
 
@@ -6,7 +6,6 @@ import { ReactComponent as HomeIcon } from '../assets/icons/home.svg'
 import { ReactComponent as DocsIcon } from '../assets/icons/docs.svg'
 import { ReactComponent as BarsIcon } from '../assets/icons/menu.svg'
 import ButtonText from './ButtonText'
-import { NavLink } from 'react-router-dom'
 
 const NavContainer = styled.nav`
   background-color: ${colors.darkpurple};
@@ -64,7 +63,7 @@ const ButtonGroup = styled.div`
 `
 
 const NavContent = styled.div`
-  height: ${props => props.isOpenMenu ? "calc(100vh - 50px)" : "0px"};
+  height: ${props => props.$isOpenMenu ? "calc(100vh - 50px)" : "0px"};
   overflow: scroll;
   // border: 1px solid red;
 
@@ -88,13 +87,8 @@ const NavContent = styled.div`
 export default function SideNav(props) {
   const {children} = props
   const [isOpenMenu, setOpenMenu] = useState(false)
-  useEffect(() => {
-    // console.log(children)
-    // props.match.path === '/home'
-  }, [])
 
   const openMenu = () => {
-    console.log(2)
     setOpenMenu(!isOpenMenu)
   }
 
@@ -114,7 +108,7 @@ export default function SideNav(props) {
         <ButtonText to='/tutorial' onClick={() => console.log('2')} icon={DocsIcon} size={18}>Tutorial</ButtonText>
       </NavHeader>
 
-      <NavContent isOpenMenu={isOpenMenu}>
+      <NavContent $isOpenMenu={isOpenMenu}>
         {children}
       </NavContent>
     </NavContainer>
