@@ -5,7 +5,7 @@ import { ReactComponent as AngleIcon } from '../../../assets/icons/angle-down.sv
 import colors from '../../../constants/colors'
 
 const NavItemContainer = styled.div`
-  // margin: 5px 0;
+  margin-bottom: 5px;
 `
 
 const ItemTitleContainer = styled.div`
@@ -14,7 +14,7 @@ const ItemTitleContainer = styled.div`
   align-items: center;
   flex-wrap: wrap;
   cursor: pointer;
-  padding: 10px 20px;
+  padding: 0px 20px;
   // line-height: 2rem;
   font-weight: 500;
 

@@ -8,7 +8,7 @@ import { ReactComponent as AngleIcon } from '../../../assets/icons/angle-down.sv
 const activeClassName = 'tutorial-item-active'
 
 const NavItemContainer = styled.div`
-  // margin-bottom: 15px;
+  margin-bottom: 5px;
 `
 
 const ItemTitleContainer = styled.div`
@@ -18,7 +18,7 @@ const ItemTitleContainer = styled.div`
   align-items: center;
   flex-wrap: wrap;
   cursor: pointer;
-  padding: 10px 20px;
+  padding: 5px 20px;
   font-weight: 500;
 
   &::before {
