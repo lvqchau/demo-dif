@@ -20,6 +20,9 @@ const Button = styled.button`
 
     transition: all .4s;
   }
+  & span {
+    transition: all .4s;
+  }
   &.active, &:hover {
     color: ${colors.neongreen};
   }
@@ -28,6 +31,9 @@ const Button = styled.button`
   }
   &.active:hover svg {
     fill: ${colors.darkgreen};
+  }
+  &:hover span {
+    color: ${colors.darkgreen};
   }
 `
 

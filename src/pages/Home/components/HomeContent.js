@@ -77,19 +77,21 @@ const Image = styled.img`
 const ButtonGroup = styled.div`
   position: absolute;
   top: 5px;
-  left: 0;
   color: ${colors.neongreen};
 `
 
 const TextAlert = styled.p`
   position: absolute;
-  right: 0;
   top: 30px;
   width: 65%;
-  text-align: right;
+  text-align: center;
   font-size: 0.6rem;
   line-height: 1rem;
   font-style: italic;
+
+  @media (min-width: 600px) {
+    display: none;
+  }
 `
 
 

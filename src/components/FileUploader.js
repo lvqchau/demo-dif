@@ -6,12 +6,6 @@ import breakpoints from '../constants/breakpoints'
 
 const Button = styled(ButtonText)`
   font-size: 0.8rem;
-  @media (min-width: ${breakpoints.m}) {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  } 
 `;
 
 function FileUploader(props) {
