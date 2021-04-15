@@ -5,6 +5,7 @@ import ButtonText from './ButtonText';
 import breakpoints from '../constants/breakpoints'
 
 const Button = styled(ButtonText)`
+  font-size: 0.8rem;
   @media (min-width: ${breakpoints.m}) {
     position: absolute;
     top: 50%;
@@ -15,7 +16,7 @@ const Button = styled(ButtonText)`
 
 function FileUploader(props) {
   const hiddenFileInput = React.useRef(null);
-  const { cv, handleImage } = props
+  const { cv, handleImage, active } = props
   
   const handleClick = event => {
     hiddenFileInput.current.click();
@@ -45,7 +46,7 @@ function FileUploader(props) {
 
   return (
     <>
-      <Button icon={UploadIcon} onClick={handleClick} size={18}>Upload Image</Button>
+      <Button className='active' icon={UploadIcon} onClick={handleClick} size={16}>Upload Image</Button>
       <input type="file"
              ref={hiddenFileInput}
              onChange={handleImage}

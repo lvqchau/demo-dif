@@ -18,6 +18,7 @@ const HomeContainer = styled.div`
 
 const BodyContent = styled.div`
   width: 100%;
+  height: calc(100vh - 50px);
   padding: 10px 20px;
   @media (min-width: 768px) {
   }
