@@ -81,12 +81,18 @@ export default function TutorialContent(props) {
   const { methodIndex } = props
   useEffect(() => {
     Object.keys(data[0]).map(key => {
-      console.log(key, data[0][key])
+      // console.log(key, data[0][key])
     })
   }, [])
 
+  useEffect(() => {
+    document.getElementById('tutorial__container').scrollIntoView(
+      {behavior: 'smooth'}
+    );
+  }, [methodIndex])
+
   return (
-    <Container>
+    <Container id="tutorial__container">
       <IntroContainer>
         <ParamsContainer>BoxParam</ParamsContainer>
         <DescriptionContainer>
