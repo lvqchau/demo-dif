@@ -8,7 +8,7 @@ import { ReactComponent as AngleIcon } from '../../../assets/icons/angle-down.sv
 const activeClassName = 'tutorial-item-active'
 
 const NavItemContainer = styled.div`
-  // margin-bottom: 5px;
+  // margin-bottom: 15px;
 `
 
 const ItemTitleContainer = styled.div`
@@ -33,10 +33,14 @@ const ItemTitleContainer = styled.div`
     transform: translateY(-50%);
     transition: all .3s ease;
   }
+
+  @media (min-width: 768px) {
+    padding: 7.5px 20px;  
+  }
 `
 
 const ItemTitle = styled.p`
-  color: ${props => props.isOpenItem ? colors.neongreen : colors.grayjean};
+  color: ${props => props.$isOpenItem ? colors.neongreen : colors.grayjean};
   transition: all .4s ease;
   word-break: break-word;
   flex: 1;
@@ -80,7 +84,7 @@ export default function NavItem(props) {
     <NavItemContainer>
       <StyledLink exact to={`/tutorial/${method.id}`}>
         <ItemTitleContainer onClick={handleOpenItem}>
-          <ItemTitle isOpenItem={index===methodIndex}>{method.name}</ItemTitle>
+          <ItemTitle $isOpenItem={index===methodIndex}>{method.name}</ItemTitle>
         </ItemTitleContainer>
       </StyledLink>
     </NavItemContainer>

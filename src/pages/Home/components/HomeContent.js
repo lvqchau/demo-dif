@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import colors from '../../../constants/colors'
 import DemoImage from '../../../assets/images/cat-drink.jpg'
-import MetaDataContainer from '../../DIFPage/MetaDataContainer'
 import FileUploader from "../../../components/FileUploader";
 
 const FrameHolder = styled.div`
@@ -52,20 +51,6 @@ const FrameOpacity = styled(Frame)`
   border: none;
 `
 
-const OutputContainer = styled.div`
-  background: ${colors.neutralblue};
-  border-radius: 6px;
-  padding: 20px;
-
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  height: 70%;
-
-  min-height: 400px;
-  // max-height: 480px;
-`;
-
 const Image = styled.img`
   display: block;
   max-width: 100%;
@@ -94,17 +79,10 @@ const TextAlert = styled.p`
   }
 `
 
-
 export default function HomeContent(props) {
-  const { cv, nj } = window
+  const { cv } = window
   const [metaView, setMetaView] = useState(false)
-  const [metaData, setMetaData] = useState()
-  const [activeBtn, setActiveBtn] = useState(null)
   const canvasTmp = useRef(null)
-  const [{alt, src}, setImg] = useState({
-    src: DemoImage,
-    alt: 'Upload an Image'
-  })
   const [{width, height}, setSize] = useState({
     height: 200,
     width: 200,
@@ -121,10 +99,7 @@ export default function HomeContent(props) {
   }
 
   const getCurrentImage = () => {
-    // let img = document.getElementById("originalImage");
-    // props.getCurrentImage()
     let img = document.getElementById("originalImage")
-    let canvas = document.getElementById("imageCanvas")
     
     if (img.src) {
       let srcMat = cv.imread('originalImage')
@@ -148,13 +123,11 @@ export default function HomeContent(props) {
           Please use a larger screen for enhance experience with Geometric Analysis
         </TextAlert>
         <Frame>
-          <Image src={DemoImage} onLoad={getCurrentImage} alt={alt} id="originalImage"/>
+          <Image src={DemoImage} onLoad={getCurrentImage} alt='dif-image' id="originalImage"/>
         </Frame>
         <FrameOpacity style={metaView ? {display: 'none'} : {}}>
             <canvas 
               ref={canvasTmp}
-              // width={width}
-              // height={height}
               style={{width, height}}
               id="imageCanvas"/>
         </FrameOpacity>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import colors from '../../constants/colors'
 
@@ -35,7 +34,7 @@ export default function TutorialPage(props) {
   
   const checkMethodId = (methodId) => {
     const available = methods.filter(method => method.id === methodId)
-    if (available.length === 0) props.history.push('/tutorial')
+    if (available.length === 0) props.history.push('/tutorial/ELA')
     else {
       const index = methods.findIndex(method => method.id === methodId)
       if (index !== -1) setMethod(index)

@@ -46,8 +46,8 @@ class Numjs {
    */
   roundValue(val, type="normal") {
     switch (type) {
-      case 'up': return Math.ceil(val)
-      case 'down': return Math.floor(val)
+      case 'up': return Math.ceil(val);
+      case 'down': return Math.floor(val);
       case 'round': 
         let integer = Math.floor(val)
         let decimal = val - integer
@@ -55,7 +55,9 @@ class Numjs {
           return integer
         else if (integer % 2 !== 0 && decimal === .5)
           return integer+1
-      default: return Math.round(val)
+        else 
+          return Math.round(val);
+      default: return Math.round(val);
     }
   }
 
