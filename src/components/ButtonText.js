@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import colors from '../constants/colors'
+import {NavLink} from 'react-router-dom'
 
 const Button = styled.button`
   display: flex;
@@ -9,11 +10,11 @@ const Button = styled.button`
   width: fit-content;
   
   font-size: 1rem;
-  color: ${colors.graypurple};
+  color: ${colors.grayjean};
   
   transition: color .4s ease;
   & svg {
-    fill: ${colors.graypurple};
+    fill: ${colors.grayjean};
 
     margin-right: 5px;
     position: relative;
@@ -23,24 +24,65 @@ const Button = styled.button`
     transition: all .4s;
   }
   &.active, &:hover {
-    color: ${colors.orange};
+    color: ${colors.neongreen};
   }
   &.active svg, &:hover svg {
-    fill: ${colors.orange};
+    fill: ${colors.neongreen};
+  }
+  &.active:hover svg {
+    fill: ${colors.darkgreen};
   }
 `
 
+const activeClassName = 'nav-item-active'
+
+const StyledLink = styled(NavLink).attrs({ activeClassName })`
+  text-decoration: none;
+
+  &.${activeClassName}:hover,
+  &.${activeClassName}:hover button {
+    color: ${colors.darkgreen};
+  }
+
+  &.${activeClassName} button {
+    color: ${colors.neongreen};
+  }
+
+  &.${activeClassName} svg, &:hover svg {
+    fill: ${colors.neongreen};
+  }
+
+  &.${activeClassName}:hover svg {
+    fill: ${colors.darkgreen};
+  }
+
+`;
+
 export default function ButtonText(props) {
-  const { className, icon, size, children, onClick, style } = props
+  const { className, icon, size, children, onClick, style, to } = props
   let Icon
   if (icon) Icon = icon
 
   return (
-    <Button className={className} onClick={onClick} style={{...style}}>
+    <>
       {
-        icon ?  <Icon width={size} height={size} /> : <></>
+        to ? 
+        <StyledLink exact={to === '/tutorial' ? false : true} to={to}>
+          <Button className={className} onClick={onClick} style={{...style}}>
+          {
+            icon ?  <Icon width={size} height={size} /> : <></>
+          }
+          { children ? <span style={{verticalAlign: 'middle'}}>{children}</span> : <></>}
+          </Button>
+        </StyledLink>
+        :
+        <Button className={className} onClick={onClick} style={{...style}}>
+        {
+          icon ?  <Icon width={size} height={size} /> : <></>
+        }
+        { children ? <span style={{verticalAlign: 'middle'}}>{children}</span> : <></>}
+        </Button>
       }
-      { children ? <span style={{verticalAlign: 'middle'}}>{children}</span> : <></>}
-    </Button>
+    </>
   )
 }
