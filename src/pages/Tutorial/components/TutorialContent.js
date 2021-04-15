@@ -17,11 +17,14 @@ const Container = styled.div`
 
 const IntroContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   margin-bottom: 10px;
   & h4 {
     font-size: 1.5rem;
     color: ${colors.neongreen};
+  }
+  @media (min-width: 576px) {
+    grid-template-columns: repeat(2, 1fr);
   }
 `
 
@@ -42,9 +45,10 @@ const VideoTitleContainer = styled.div`
   // align-items: center;
   & h4 {
     margin-right: 10px;
+    font-size: 1.5rem;
   }
   & svg {
-    margin-top: 4px;
+    margin-top: 8px;
   }
 `
 
@@ -59,7 +63,10 @@ const InstructionTitle = styled.div`
 
 const InstructionDetails = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
+  @media (min-width: 576px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `
 
 const InstructionDetail = styled.div`
