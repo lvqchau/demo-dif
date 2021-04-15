@@ -20,6 +20,8 @@ const TutorialContainer = styled.div`
 `
 
 const BodyContent = styled.div`
+  height: 100vh;
+  overflow: scroll;
   width: 100%;
   padding: 10px 20px;
   @media (min-width: 768px) {
