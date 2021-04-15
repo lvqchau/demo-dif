@@ -12,10 +12,17 @@ const NavContainer = styled.nav`
   background-color: ${colors.darkpurple};
   color: ${colors.grayjean};
   width: 100%;
-  height: 60px;
-  position: relative;
-  padding: 20px 20px 10px 20px;
+  height: 50px;
+  position: sticky;
+  z-index: 100;
+  top: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   @media (min-width: 768px) {
+    display: block;
     width: 24%;
     height: auto;
     min-width: 250px;
@@ -26,6 +33,7 @@ const NavContainer = styled.nav`
 const NavHeaderMini = styled.div`
   background-color: ${colors.darkpurple};
   width: 100%;
+  padding: 0 20px;
   height: 30px;
   display: flex;
   justify-content: space-between;
@@ -56,13 +64,13 @@ const ButtonGroup = styled.div`
 `
 
 const NavContent = styled.div`
-  height: ${props => props.isOpenMenu ? "calc(100vh - 60px)" : "0px"};
+  height: ${props => props.isOpenMenu ? "calc(100vh - 50px)" : "0px"};
   overflow: scroll;
   // border: 1px solid red;
 
   background-color: inherit;
   position: fixed;
-  top: 60px;
+  top: 50px;
   right: 0;
   width: 40%;
   min-width: 200px;

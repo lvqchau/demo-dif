@@ -18,10 +18,7 @@ const Button = styled.button`
   & svg {
     fill: ${colors.purple};
     
-    margin-right: 5px;
     position: relative;
-    top: 50%;
-    transform: translateY(-25%);
     
     transition: all .4s;
   }
@@ -44,7 +41,7 @@ export default function ButtonLined(props) {
       {
         icon ? <Icon width={size} height={size} /> : <></>
       }
-      { children ? <span style={{verticalAlign: 'middle'}}>{children}</span> : <></>}
+      { children ? <span style={{verticalAlign: 'middle', marginLeft: 5}}>{children}</span> : <></>}
     </Button>
   )
 }

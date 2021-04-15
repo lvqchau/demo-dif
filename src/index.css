@@ -1,48 +1,17 @@
-@font-face {
-  font-family: 'KhmerMN';
-  font-style: normal;
-  font-weight: 400;
-  src: local('KhmerMN'), local('Khmer MN'),
-       url('./assets/fonts/KhmerMN.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'KhmerMN';
-  font-weight: 500;
-  src: local('KhmerMN'), local('Khmer MN'),
-       url('./assets/fonts/KhmerMN-Bold.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'JosefinSans';
-  font-style: normal;
-  font-weight: 400;
-  src: local('JosefinSans'), local('Josefin Sans'),
-       url('./assets/fonts/JosefinSans-Regular.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'JosefinSans';
-  font-style: normal;
-  font-weight: 500;
-  src: local('JosefinSans'), local('Josefin Sans'),
-       url('./assets/fonts/JosefinSans-SemiBold.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'JosefinSans';
-  font-style: normal;
-  font-weight: 600;
-  src: local('JosefinSans'), local('Josefin Sans'),
-       url('./assets/fonts/JosefinSans-Bold.ttf') format('truetype');
-}
+@import url('https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap');
 
 body {
   margin: 0;
-  font-family: 'KhmerMN';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 18px;
+  font-size: 15px;
+  line-height: 1.3rem;
+}
+
+@media screen and (min-width: 768px) {
+  body {
+    font-size: 16px;
+  }
 }
 
 code {
@@ -54,7 +23,8 @@ code {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'KhmerMN';
+  /* font-family: 'Audrey'; */
+  font-family: 'Tenor Sans', sans-serif;
 }
 
 p {

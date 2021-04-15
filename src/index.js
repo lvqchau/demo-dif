@@ -13,7 +13,9 @@ const middleware = applyMiddleware(thunk);
 
 const enhancer = compose(
   middleware,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  window.__REDUX_DEVTOOLS_EXTENSION__
+        ? window.__REDUX_DEVTOOLS_EXTENSION__()
+        : f => f
 );
 
 const store = createStore(rootReducer, enhancer);

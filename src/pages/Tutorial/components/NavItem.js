@@ -8,18 +8,31 @@ import { ReactComponent as AngleIcon } from '../../../assets/icons/angle-down.sv
 const activeClassName = 'tutorial-item-active'
 
 const NavItemContainer = styled.div`
-  margin-bottom: 15px;
+  // margin-bottom: 5px;
 `
 
 const ItemTitleContainer = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   cursor: pointer;
-  padding: 0 20px;
-  line-height: 2rem;
+  padding: 10px 20px;
   font-weight: 500;
+
+  &::before {
+    content: "";
+    position: absolute;
+    height: 0;
+    width: 2px;
+    background: ${colors.neongreen};
+    border-radius: 20px;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all .3s ease;
+  }
 `
 
 const ItemTitle = styled.p`
@@ -27,16 +40,6 @@ const ItemTitle = styled.p`
   transition: all .4s ease;
   word-break: break-word;
   flex: 1;
-`
-
-const ParamsContainer = styled.div`
-  max-height: ${props => props.isOpenItem ? "600px" : "0"};
-  overflow: hidden;
-  transition: max-height 1.2s ease;
-`
-
-const ParamsBox = styled.div`
-  padding: 0px 15px 0px 30px;
 `
 
 const StyledLink = styled(NavLink).attrs({ activeClassName })`
@@ -47,7 +50,8 @@ const StyledLink = styled(NavLink).attrs({ activeClassName })`
     color: ${colors.darkgreen};
   }
 
-  &.${activeClassName} button {
+  &.${activeClassName} button,
+  &:hover p {
     color: ${colors.neongreen};
   }
   
@@ -59,6 +63,10 @@ const StyledLink = styled(NavLink).attrs({ activeClassName })`
     fill: ${colors.darkgreen};
   }
 
+  &.${activeClassName} ${ItemTitleContainer}::before,
+  &:hover ${ItemTitleContainer}::before {
+    height: 100%;
+  }
 `;
 
 export default function NavItem(props) {
