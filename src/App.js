@@ -6,6 +6,8 @@ import DIFPage from './pages/DIFPage'
 import injectScript from './utils/injectScript'
 import Loader from './components/Loader'
 import HomePage from './pages/HomePage'
+import Home from './pages/Home'
+import TutorialPage from './pages/Tutorial'
 // import SideMenu from './components/SideMenu'
 // import HomePage from './pages/HomePage'
 
@@ -46,7 +48,8 @@ function App() {
         <Route path='/dif'>
           <DIFPage/>
         </Route>
-
+        <Route exact path='/home' component={Home}/>
+        <Route exact path='/tutorial/:methodId?' component={TutorialPage}/>
       </Switch>
     </BrowserRouter>
   )
