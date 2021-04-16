@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import colors from '../../../constants/colors'
 import DemoImage from '../../../assets/images/cat-drink.jpg'
@@ -54,9 +54,14 @@ const FrameOpacity = styled(Frame)`
 const Image = styled.img`
   display: block;
   max-width: 100%;
-  max-height: 450px;
   width: auto;
   height: auto;
+
+  max-height: calc(100vh - 96px);
+
+  @media (min-height: 550px) {
+    max-height: 450px;
+  }
 `
 
 const ButtonGroup = styled.div`
@@ -87,6 +92,18 @@ export default function HomeContent(props) {
     height: 200,
     width: 200,
   })
+
+  useEffect(() => {
+    function handleResize() {
+      let img = document.getElementById("originalImage")
+
+      document.getElementById('imageCanvas').style.height = img.height
+      document.getElementById('imageCanvas').style.width = img.width
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  },[])
 
   const handleImage = (event) => {
     if (event.target.files[0]) {

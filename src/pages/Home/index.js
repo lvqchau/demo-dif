@@ -21,6 +21,7 @@ const BodyContent = styled.div`
   height: calc(100vh - 50px);
   padding: 10px 20px;
   @media (min-width: 768px) {
+    height: 100vh;
   }
 `
 

@@ -5,6 +5,18 @@ import NavItem from './NavItem'
 
 const MethodsBox =styled.div`
   padding: 15px 0;
+  & h1 {
+    margin: 20px 0 30px;
+    text-align: center;
+    font-size: 3rem;
+    color: rgb(48 38 110);
+    display: none;
+  }
+  @media (min-width: 768px) {
+    & h1 {
+      display: block;
+    }
+  }
 `
 
 export default function MethodContainer(props) {
@@ -13,6 +25,7 @@ export default function MethodContainer(props) {
 
   return (
     <MethodsBox>
+      <h1>METHODS</h1>
       {
         methods.map((method, index) => {
           return (
