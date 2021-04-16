@@ -24,13 +24,13 @@ const Frame = styled.div`
   height: fit-content;
   pointer-events: none;
   max-width: 95%;
-  border: solid 10px ${colors.neutralbeige};
-  border-bottom-color: ${colors.neutralbeige};
-  border-left-color: ${colors.lightbeige};
-  border-right-color:  ${colors.lightbeige};
-  border-top-color: ${colors.neutralbeige};
+  border: solid 10px #fff;
+  // border-bottom-color: ${colors.neutralbeige};
+  // border-left-color: ${colors.lightbeige};
+  // border-right-color:  ${colors.lightbeige};
+  // border-top-color: ${colors.neutralbeige};
 
-  border-radius: 2px;
+  border-radius: 4px;
 
   & canvas {
     display: flex;

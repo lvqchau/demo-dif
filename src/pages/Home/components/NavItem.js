@@ -14,9 +14,24 @@ const ItemTitleContainer = styled.div`
   align-items: center;
   flex-wrap: wrap;
   cursor: pointer;
+  position: relative;
   padding: 0px 20px;
   // line-height: 2rem;
   font-weight: 500;
+
+  &::before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 2px;
+    // background: ${colors.neongreen};
+    background: ${props => props.$isOpenItem ? `${colors.neongreen}` : `${colors.grayjean}`};
+    border-radius: 20px;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all .3s ease;
+  }
 
   @media (min-width: 768px) {
     padding: 0px 20px;  
@@ -56,7 +71,7 @@ export default function NavItem(props) {
 
   return (
     <NavItemContainer>
-      <ItemTitleContainer onClick={handleOpenItem}>
+      <ItemTitleContainer onClick={handleOpenItem} $isOpenItem={isOpenItem}>
         <ItemTitle $isOpenItem={isOpenItem}>{method.name}</ItemTitle>
         <StyledAngle $isOpenItem={isOpenItem} width={10} height={10}/>
       </ItemTitleContainer>

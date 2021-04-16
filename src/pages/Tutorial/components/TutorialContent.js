@@ -12,11 +12,11 @@ const Container = styled.div`
   & h4 {
     font-weight: 500;
     font-size: 1.3rem;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    color: ${colors.neongreen};
   }
   & p {
     color: white;
-    // line-height: 1.5rem;
   }
 `
 
@@ -24,9 +24,6 @@ const IntroContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
-  & h4 {
-    color: ${colors.neongreen};
-  }
   @media (min-width: 768px) {
     flex-direction: row;
   }
@@ -54,7 +51,7 @@ const VideoContainer = styled.div`
   & iframe {
     width: 100%;
   }
-  
+
   @media (min-width: 576px) {
     & iframe {
       width: auto;
@@ -93,13 +90,11 @@ const InstructionDetails = styled.div`
 const InstructionDetail = styled.div`
   margin-bottom: 10px;
   & h4 {
-    // display: flex;
-    color: ${colors.neongreen}
+    color: ${colors.grayjean}
   }
   & h4 > span {
     font-size: 0.7em;
     margin-left: 10px;
-    // color: ${colors.grayjean}
   }
 `
 
@@ -154,14 +149,14 @@ export default function TutorialContent(props) {
           <img src={DemoParamBox} style={{width: '100%'}}/>
         </ParamsContainer>
         <DescriptionContainer>
-          <h4>{name}</h4>
+          <h4>I. {name}</h4>
           <div>{getNewLine(desc)}</div>
         </DescriptionContainer>
       </IntroContainer>
 
       <VideoContainer>
         <VideoTitleContainer>
-          <h4>Demo Video</h4>
+          <h4>II. Demo Video</h4>
           <YoutubeIcon width={18} height={18} />
         </VideoTitleContainer>
         <iframe height="auto" src={url} title="YouTube video player" frameBorder={0} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
@@ -169,7 +164,7 @@ export default function TutorialContent(props) {
 
       <InstructionContainer>
         <InstructionTitle>
-          <h4>Instructions</h4>
+          <h4>III. Instructions</h4>
           <p>{instructions.desc}</p>
         </InstructionTitle>
 
@@ -189,7 +184,7 @@ export default function TutorialContent(props) {
 
       <InstructionContainer>
         <InstructionTitle>
-          <h4>Pitfall</h4>
+          <h4>IV. Pitfalls</h4>
           <p>{pitfalls.desc}</p>
         </InstructionTitle>
         <PitfallDetails>
