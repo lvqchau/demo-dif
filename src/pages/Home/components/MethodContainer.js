@@ -19,20 +19,65 @@ const MethodsBox =styled.div`
   }
 `
 
+const SelectionContainer = styled.div`
+  padding: 0 20px 25px 20px;
+  & p {
+    margin-bottom: 10px;
+  }
+  & select {
+    width: 80%;
+    max-width: 130px;
+    padding: 10px 5px;
+    border-radius: 7px;
+    outline: none;
+  }
+`
+
+const MethodTypeContainer = styled.div`
+  margin-bottom: 50px;
+  & h3 {
+    padding-left: 20px;
+    font-weight: 300;
+    color: #D76AFF;
+    margin-bottom: 15px;
+  }
+`
+
 export default function MethodContainer(props) {
   const { methodIndex, onChangeMethod } = props
   const { methods, params } = useSelector(state => state.methods)
 
   return (
     <MethodsBox>
+      <SelectionContainer>
+        <p>Select your purpose</p>
+        <select>
+          <option>General</option>
+          <option>Blog</option>
+          <option>News</option>
+        </select>
+      </SelectionContainer>
       <h1>METHODS</h1>
-      {
-        methods.map((method, index) => {
-          return (
-            <NavItem key={`method-${index}`} method={method} params={params[method.id]}/>
-          )
-        })
-      }
+      <MethodTypeContainer>
+        <h3>Recommended</h3>
+        {
+          methods.map((method, index) => {
+            return (
+              <NavItem key={`method-${index}`} method={method} params={params[method.id]}/>
+            )
+          })
+        }
+      </MethodTypeContainer>
+      <MethodTypeContainer>
+        <h3>Others</h3>
+        {
+          methods.map((method, index) => {
+            return (
+              <NavItem key={`method-${index}`} method={method} params={params[method.id]}/>
+            )
+          })
+        }
+      </MethodTypeContainer>
     </MethodsBox>
   )
 }
